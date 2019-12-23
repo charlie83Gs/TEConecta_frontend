@@ -137,7 +137,7 @@ export default class AddUser extends Component<{}, AddUserState> {
 
     if(err) return;
 
-    let user: User = new User(
+    var user: User = new User(
                             "0",
                             this.state.name,
                             this.state.phone,
@@ -150,6 +150,8 @@ export default class AddUser extends Component<{}, AddUserState> {
                             this.state.manager,
                             );
     if(this.state.editMode){
+        var userSt : any = sessionStorage.getItem("user");
+        user.password = user.password;
         updateUser(user,this.onUserAdded);
         sessionStorage.removeItem("user");
     }else

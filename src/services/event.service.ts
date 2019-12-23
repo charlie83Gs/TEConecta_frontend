@@ -1,18 +1,18 @@
 import URLS, {HEADERS,CreateHeaders} from "../config/urls";
 import axios from 'axios';
 import {getSession} from './session.service';
-import User from '../model/user.model'
+import Event from '../model/event.model'
 
-export function addEvent(user : User, callback : Function){
+export function addEvent(event : Event, callback : Function){
     var session = getSession();
     //console.log(session);
     //console.log(CreateHeaders(session.token));
     //console.log(user.toJson());
     axios({
 		method: 'post',
-		url: URLS.SERVER + URLS.ACCOUNT_DIR,
+		url: URLS.SERVER + URLS.EVENT_DIR,
 		headers: CreateHeaders(session.token),
-		data : user.toJson()
+		data : event.toJsonNoId()
 	})
 	.then(function (response) {
         callback(true);

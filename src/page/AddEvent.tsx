@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'; // let's also import Component
 import {Col,Row,Container} from 'reactstrap';
 import Header from '../component/Header';
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import { FormLabel,MenuItem,Select,FormGroup, Checkbox } from '@material-ui/core';
 import { FormControlLabel,Button,TextField, FormControl} from '@material-ui/core';
 import {
@@ -12,21 +12,37 @@ import {
 import { green } from '@material-ui/core/colors';
 import ROUTES from '../config/routes';
 import DateFnsUtils from '@date-io/date-fns';
+import Event from '../model/event.model';
+import {addEvent} from '../services/event.service';
+import {getSession} from '../services/session.service';
 
 type AddEventState = {
   name: string,
-  start: Date,
   place: string,
   date: Date,
+  start: Date,
   end: Date,
-  manager: string,
   image: string,
+  description: string,
+  hasAssistance : boolean,
+  space : number,
   nameError: boolean,
   startError: boolean,
   placeError: boolean,
   dateError: boolean,
   endError: boolean,
-  managerError: boolean
+  descriptionError: boolean,
+  editMode: boolean,
+  created: boolean
+}
+
+function formatDateToTime(date : Date) {
+
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var seconds = date.getSeconds();
+
+  return hours + ':' + minutes + ':' + seconds;
 }
 
 export default class AddEvent extends Component<{}, AddEventState> {
@@ -47,14 +63,16 @@ export default class AddEvent extends Component<{}, AddEventState> {
           "place" : "",
           "date" :new Date(),
           "end" :new Date(),
-          "manager" : "",
           "image" : "",
+          "description" : "",
           "nameError" : false,
           "startError" : false,
           "placeError" : false,
           "dateError" : false,
           "endError" : false,
-          "managerError" : false
+          "descriptionError" : false,
+          "editMode" : false,
+          "created" : false,
       })    
         
   }
@@ -65,10 +83,8 @@ export default class AddEvent extends Component<{}, AddEventState> {
     let err : boolean = false
     //reset status
     stateUpdate["nameError"] = false;
-    stateUpdate["phoneError"] = false;
+    stateUpdate["descriptionError"] = false;
     stateUpdate["placeError"] = false;
-    stateUpdate["emailError"] = false;
-    stateUpdate["managerError"] = false;
 
     //mark error on unfilled fields
     if(this.state.name.length < 1){
@@ -77,24 +93,47 @@ export default class AddEvent extends Component<{}, AddEventState> {
     }
     if(this.state.place.length < 1){
         err = true;
-        stateUpdate["phoneError"] = true;
-    }
-    if(this.state.place.length < 1){
-        err = true;
         stateUpdate["placeError"] = true;
     }
-    if(this.state.manager.length < 1){
+    if(this.state.description.length < 1){
         err = true;
-        stateUpdate["managerError"] = true;
+        stateUpdate["descriptionError"] = true;
     }
 
+
     this.setState(stateUpdate);
-
+    //console.log(err)
     if(err) return;
+    var session = getSession();
+    //create a new event object
+    let event : Event = new Event(
+                                  "",
+                                  this.state.name,
+                                  this.state.date.toLocaleDateString("en-US"),
+                                  this.state.description,
+                                  this.state.place,
+                                  "event",
+                                  this.state.place,
+                                  "",
+                                  formatDateToTime(this.state.start),
+                                  formatDateToTime(this.state.end),
+                                  this.state.hasAssistance,
+                                  "Activo",
+                                  this.state.space,
+                                  session.id
+    );
+    console.log("create event object")
+    if(this.state.editMode){
+      console.log("editing")
+      sessionStorage.removeItem("event");
+    }else
+    addEvent(event,this.onEventAdded);
 
+  }
 
-
-
+  onEventAdded = (res : boolean) => {
+    console.log(res);
+    this.setState({"created" : res})
   }
 
   handleFieldChange = (name : string) => ({target : {value }} : {target : { value:any }}) => {
@@ -130,7 +169,7 @@ export default class AddEvent extends Component<{}, AddEventState> {
               <label>Inicio</label>
               <KeyboardTimePicker
                 className ="login_input"
-                value={new Date()}
+                value={this.state.start}
                 onChange={myself.handleDateChange("start")}
                 KeyboardButtonProps={{
                   'aria-label': 'change time',
@@ -152,8 +191,8 @@ export default class AddEvent extends Component<{}, AddEventState> {
               <label>Fecha</label>
                   <KeyboardDatePicker
                       className ="login_input"
-                      value={new Date()}
-                      onChange={myself.handleDateChange("name")}
+                      value={this.state.date.toString()}
+                      onChange={myself.handleDateChange("date")}
                       KeyboardButtonProps={{
                         'aria-label': 'change time',
                       }}
@@ -163,8 +202,8 @@ export default class AddEvent extends Component<{}, AddEventState> {
               <label>Fin</label>
                 <KeyboardTimePicker
                   className ="login_input"
-                  value={new Date()}
-                  onChange={myself.handleDateChange("name")}
+                  value={this.state.end}
+                  onChange={myself.handleDateChange("end")}
                   KeyboardButtonProps={{
                     'aria-label': 'change time',
                   }}
@@ -183,7 +222,7 @@ export default class AddEvent extends Component<{}, AddEventState> {
                   />
                   <TextField
                     style={{"width":"5rem" , "backgroundColor" : "white"}}
-                    onChange = {myself.handleFieldChange("name")}
+                    onChange = {myself.handleFieldChange("space")}
                     type="number"
                     
                     />
@@ -206,9 +245,9 @@ export default class AddEvent extends Component<{}, AddEventState> {
               <label>Descripcion</label>
                     <TextField
                     className ="login_input"
-                    onChange = {myself.handleFieldChange("name")}
-                    error = {myself.state.nameError}
-                    label={myself.state.nameError ? "Por favor inserta una descripcion del evento" : ""}
+                    onChange = {myself.handleFieldChange("description")}
+                    error = {myself.state.descriptionError}
+                    label={myself.state.descriptionError ? "Por favor inserta una descripcion del evento" : ""}
                     multiline
                     rows="12"
                     variant="outlined"
@@ -237,6 +276,13 @@ export default class AddEvent extends Component<{}, AddEventState> {
 
             </Row>
             </MuiPickersUtilsProvider>
+            <Route render={() => {
+            if (myself.state.created) {
+              return <Redirect push to={ROUTES.MENU} />;
+            }
+
+           }}
+            />
         </div>
         
     )
