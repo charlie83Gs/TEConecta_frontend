@@ -5,7 +5,7 @@ import { Route, Redirect } from "react-router-dom";
 import { FormLabel,MenuItem,Select,FormGroup } from '@material-ui/core';
 import { FormControlLabel,Button,TextField, FormControl} from '@material-ui/core';
 import User from '../model/user.model';
-import {addUser} from '../services/user.services';
+import {addUser, updateUser} from '../services/user.services';
 import ROUTES from '../config/routes';
 const adminOptions = [
     { label: 'Grupo de interes' },
@@ -31,6 +31,7 @@ const adminOptions = [
     managerError: boolean,
     imageError: boolean,
     created : boolean;
+    editMode : boolean;
   }
   
 
@@ -47,14 +48,33 @@ export default class AddUser extends Component<{}, AddUserState> {
   // Before the component mounts, we initialise our state
   componentWillMount() {
     //var username : any = localStorage.getItem("username");
+    var user : any = sessionStorage.getItem("user");
+    let name : string = "";
+    let description : string = "";
+    let place : string = "";
+    let email : string = "";
+    let phone : string = "";
+    let manager : string = "";
+    let editMode : boolean = false;
+    if(user){
+        user = JSON.parse(user);
+        editMode = true;
+        name = user.name;
+        description = user.description;
+        place = user.place;
+        email = user.id;
+        phone = user.phone;
+        manager = user.manager;
+    }
+
     this.setState(
-        {   "name" : "",
-            "description" : "",
+        {   "name" : name,
+            "description" : description,
             "userType" : 0,
-            "place" : "",
-            "email" : "",
-            "phone" : "",
-            "manager" : "",
+            "place" : place,
+            "email" : email,
+            "phone" : phone,
+            "manager" : manager,
             "image" : "",
             "nameError" : false,
             "descriptionError" : false,
@@ -64,7 +84,8 @@ export default class AddUser extends Component<{}, AddUserState> {
             "phoneError" : false,
             "managerError" : false,
             "imageError" : false,
-            "created" : false
+            "created" : false,
+            "editMode" : editMode,
         })    
   }
 
@@ -128,7 +149,10 @@ export default class AddUser extends Component<{}, AddUserState> {
                             "",
                             this.state.manager,
                             );
-
+    if(this.state.editMode){
+        updateUser(user,this.onUserAdded);
+        sessionStorage.removeItem("user");
+    }else
     addUser(user,this.onUserAdded);
 
 
@@ -151,6 +175,7 @@ export default class AddUser extends Component<{}, AddUserState> {
                     <TextField
                     id="standard-helperText"
                     className ="login_input"
+                    value={this.state.name}
                     onChange = {myself.handleFieldChange("name")}
                     error = {myself.state.nameError}
                     label={myself.state.nameError ? "Por favor inserta un nombre correcto" : ""}
@@ -186,6 +211,7 @@ export default class AddUser extends Component<{}, AddUserState> {
                     <TextField
                     id="standard-helperText"
                     className ="login_input"
+                    value={this.state.place}
                     onChange = {myself.handleFieldChange("place")}
                     error = {myself.state.placeError}
                     label={myself.state.placeError ? "Por favor inserta una sede correcto" : ""}
@@ -198,6 +224,7 @@ export default class AddUser extends Component<{}, AddUserState> {
                     <TextField
                     id="standard-helperText"
                     className ="login_input"
+                    value={this.state.email}
                     onChange = {myself.handleFieldChange("email")}
                     error = {myself.state.emailError}
                     label={myself.state.emailError ? "Por favor inserta un correo correcto" : ""}
@@ -211,6 +238,7 @@ export default class AddUser extends Component<{}, AddUserState> {
                     <TextField
                     id="standard-helperText"
                     className ="login_input"
+                    value={this.state.phone}
                     onChange = {myself.handleFieldChange("phone")}
                     error = {myself.state.phoneError}
                     label={myself.state.phoneError ? "Por favor inserta un telefono correcto" : ""}
@@ -223,6 +251,7 @@ export default class AddUser extends Component<{}, AddUserState> {
                     <TextField
                     id="standard-helperText"
                     className ="login_input"
+                    value={this.state.manager}
                     onChange = {myself.handleFieldChange("manager")}
                     error = {myself.state.managerError}
                     label={myself.state.managerError ? "Por favor inserta un encargado correcto" : ""}
@@ -235,6 +264,7 @@ export default class AddUser extends Component<{}, AddUserState> {
                     <TextField
                     id="standard-helperText"
                     className ="login_input"
+                    value={this.state.description}
                     onChange = {myself.handleFieldChange("description")}
                     multiline
                     rows="4"
@@ -259,12 +289,12 @@ export default class AddUser extends Component<{}, AddUserState> {
                 <button 
                         className="mr-4 green teconecta_button mid_lenght"
                         onClick={this.handleSubmit}>
-                        Crear
+                        {this.state.editMode ? "Actualizar" : "Crear"}
                 </button>
                 <Route render={({ history}) => (
                 <button 
                         className="ml-4 red teconecta_button mid_lenght"
-                        onClick={()=>{history.push(ROUTES.MENU)}}>
+                        onClick={()=>{sessionStorage.removeItem("user");history.goBack()}}>
                         Cancelar
                 </button>
                 )} />
