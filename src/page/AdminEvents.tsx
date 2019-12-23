@@ -2,10 +2,21 @@ import React, { Component, Fragment } from 'react'; // let's also import Compone
 import {Col,Row,Container} from 'reactstrap';
 import Header from '../component/Header';
 import { Route } from "react-router-dom";
+import {getEvents} from '../services/event.service'
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Divider from '@material-ui/core/Divider';
+import ListItemText from '@material-ui/core/ListItemText';
+import {Button} from '@material-ui/core';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ROUTES from '../config/routes';
+
+type AdminEventState = {
+  events: any,
+}
 
 
-
-export default class AdminEvent extends Component<{}, {}> {
+export default class AdminEvent extends Component<{}, AdminEventState> {
 
 
     constructor(props : any) { // does not compile in strict mode
@@ -15,18 +26,98 @@ export default class AdminEvent extends Component<{}, {}> {
     }
 
 
-  // Before the component mounts, we initialise our state
+
+
   componentWillMount() {
     //var username : any = localStorage.getItem("username");
-        
+      this.setState({"events" : undefined})
+      getEvents(this.onEventsLoaded);
+  }
+
+  onEventsLoaded = (response : any) =>{
+      console.log("loaded")
+      console.log(response )
+      this.setState({"events" : response});
+  }
+
+  setEvent = (event: any) => { 
+    sessionStorage.setItem("user", JSON.stringify(event));
+  }
+
+  deleteEvent = (event: any) => { 
+    //deleteUser(user.id, ()=>{});
   }
 
 
   render() {
-    
+    let myself = this;
     return(
         <div className="gray" style={{"minHeight":"100vh"}}>
             <Header title="Administrar Eventos"></Header> 
+            <Row className="m-0 dark_blue white_text" >
+            <Col md="2">
+              <h5>Nombre</h5>
+            </Col>
+            <Col md="2">
+              <h5>fecha</h5>
+            </Col>
+            <Col md="1">
+              <h5>cupo</h5>
+            </Col>
+            </Row>
+            {this.state.events ?
+              <List>
+              {this.state.events.map(
+                (event : any,index : number) =>{
+                return (
+                  <Row className="ml-0 mr-0 mb-2 p-2" style={{"backgroundColor":"#FFF"}} key = {index}>
+                  <Col md="2" >
+                  <ListItem  key = {index} alignItems="flex-start">
+                     <ListItemText 
+                           primary={event.name + " - " + event.date }
+                           secondary={event.description}/>
+
+                  </ListItem >
+                  </Col>
+                  <Col md="2" >
+                  <ListItem  key = {index} alignItems="flex-start">
+                     <ListItemText 
+                           primary={ event.date}/>
+
+                  </ListItem >
+                  </Col>
+                  <Col md="1" >
+                  <ListItem  key = {index} alignItems="flex-start">
+                     <ListItemText 
+                           primary={event.space}/>
+
+                  </ListItem >
+                  </Col>
+                  <Route render={({ history}) => (
+                  <Col md="7"  className="my-auto">
+                  
+                  <Button variant="contained" color="primary" 
+                    onClick={()=>{myself.setEvent(event) ;history.push(ROUTES.ADD_USER);}}>
+                    Actualizar
+                  </Button>
+                  <Button className="ml-2" variant="contained" color="primary" >
+                    Participantes
+                  </Button>
+                  <Button className="ml-2" variant="contained" color="secondary" 
+                    onClick={()=>{myself.deleteEvent(event);window.location.reload();;}}>
+                    Cancelar
+                  </Button>
+                  </Col>
+                  )} />
+                  </Row>
+                )   
+                }
+              )}
+              </List>
+              :
+              <div></div>
+            }
+            
         </div>
         
     )

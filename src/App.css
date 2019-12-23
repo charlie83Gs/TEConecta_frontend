@@ -116,7 +116,12 @@ body, #root{
 .blue{
   background-color: #114C90;
 }
-
+.dark_blue{
+  background-color: #002855;
+}
+.white_text{
+  color: white;
+}
 
 .bar{
   height: 1.5rem;

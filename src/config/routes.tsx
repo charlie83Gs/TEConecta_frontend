@@ -4,8 +4,8 @@ const ROUTES={
     LOGIN : "/login",
     ADD_USER : "/addUser",
     ADD_EVENT : "/addEvent",
-    ADMIN_USER : "/adminEvents",
-    ADMIN_EVENT : "/adminUsers",
+    ADMIN_USER : "/adminUsers",
+    ADMIN_EVENT : "/adminEvents",
     EVENT_HISTORY : "/eventHistory",
 
 }
