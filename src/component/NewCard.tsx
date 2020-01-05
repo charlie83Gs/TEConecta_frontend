@@ -15,7 +15,8 @@ export const NewCard =
         )  
     }
 
-    interface LoginProps {
     
-    }
+interface LoginProps {
+    
+}
 

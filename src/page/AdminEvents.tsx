@@ -10,7 +10,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import {Button} from '@material-ui/core';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ROUTES from '../config/routes';
-//---------------------------------------------------
+import AlertDialog from '../component/AlertDialog'
 
 type AdminEventState = {
   events: any,
@@ -40,7 +40,7 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
   }
 
   setEvent = (event: any) => { 
-    sessionStorage.setItem("user", JSON.stringify(event));
+    sessionStorage.setItem("event", JSON.stringify(event));
   }
 
   deleteEvent = (event: any) => { 
@@ -102,10 +102,8 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
                   <Button className="ml-2" variant="contained" color="primary" >
                     Participantes
                   </Button>
-                  <Button className="ml-2" variant="contained" color="secondary" 
-                    onClick={()=>{myself.deleteEvent(event);window.location.reload();;}}>
-                    Cancelar Evento
-                  </Button>
+                  <AlertDialog onAccept={() => {myself.setEvent(event) ;history.push(ROUTES.ADD_EVENT);}}  onReject={() => {}} text ={"cancelar"}/>
+
                   </Col>
                   )} />
                   </Row>
@@ -116,7 +114,7 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
               :
               <div></div>
             }
-            
+           
         </div>
         
     )

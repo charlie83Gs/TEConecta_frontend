@@ -22,6 +22,24 @@ export function addEvent(event : Event, callback : Function){
 	});
 }
 
+export function updateEvent(event : Event, callback : Function){
+    var session = getSession();
+    //console.log(session);
+    //console.log(CreateHeaders(session.token));
+    //console.log(user.toJson());
+    axios({
+		method: 'patch',
+		url: URLS.SERVER + URLS.EVENT_DIR,
+		headers: CreateHeaders(session.token),
+		data : event.toJsonNoId()
+	})
+	.then(function (response) {
+        callback(true);
+	}, (error) => {
+		console.log(error);
+		callback(false);
+	});
+}
 
 
 export function getEvents(callback : Function){
@@ -37,3 +55,4 @@ export function getEvents(callback : Function){
 		callback(undefined);
 	});
 }
+
