@@ -2,6 +2,7 @@ const URLS = {
     SERVER : "http://localhost:3000",
     ACCOUNT_DIR : "/account",
     LOGIN_DIR : "/users/login",
+    ALL_EVENT_DIR : "/allactivities",
     EVENT_DIR : "/activities",
     
 }

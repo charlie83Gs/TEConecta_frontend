@@ -45,7 +45,7 @@ export default class EventHistory extends Component<{}, EventHistoryState> {
     let myself = this;
     return(
         <div className="gray" style={{"minHeight":"100vh"}}>
-            <Header title="Historial de eventos" navigate={true}></Header> 
+            <Header title=" - Historial de eventos" navigate={true}></Header> 
             <Row className="m-0 dark_blue white_text" >
             <Col md="2">
               <h5>Nombre</h5>

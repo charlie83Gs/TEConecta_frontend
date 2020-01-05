@@ -169,7 +169,7 @@ export default class AddEvent extends Component<{}, AddEventState> {
                                   this.state.name,
                                   this.state.date.toLocaleDateString("en-US"),
                                   this.state.description,
-                                  this.state.place,
+                                  this.state.location,
                                   "event",
                                   this.state.place,
                                   "",
@@ -230,7 +230,7 @@ export default class AddEvent extends Component<{}, AddEventState> {
     let myself = this;
     return(
         <div className="gray" style={{"minHeight":"100vh"}}>
-            <Header title="Agregar Evento" navigate={true}></Header> 
+            <Header title=" - Agregar Evento" navigate={true}></Header> 
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <Row className="m-0">
               <Col md="3" className="ml-4">

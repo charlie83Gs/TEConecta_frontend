@@ -57,6 +57,11 @@ body, #root{
   background-color: white;
 }
 
+.menu_input{
+  width: 12rem;
+  background-color: white;
+}
+
 .small_font{
   font-size: 8pt;
 }
@@ -71,6 +76,16 @@ body, #root{
   color: white;
   margin-top: 0;
 }
+
+
+.blue_container{
+  background-color: #002855;
+  color: white;
+  margin-top: 0;
+  min-width: 100vw;
+  padding: 0.5rem;
+}
+
 
 .menu_item{
   min-height: 15rem;

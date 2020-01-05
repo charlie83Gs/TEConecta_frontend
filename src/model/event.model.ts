@@ -123,7 +123,7 @@ const dateFromString = (date : string) : Date => {
     var day = parseInt(pieces[0])
     var month = parseInt(pieces[1])
     var year = parseInt(pieces[2])
-  
+   
     return new Date(year,month,day)
   }
 

@@ -43,7 +43,7 @@ export default class Menu extends Component<{}, {}> {
     
     return(
         <div className="gray" style={{"minHeight":"100vh"}}>
-            <Header title="Centro de administración" navigate={true}></Header> 
+            <Header title=" - Centro de administración" navigate={true}></Header> 
             <Row className="mt-4">
             <Route render={({ history}) => (
                 <Fragment>

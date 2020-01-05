@@ -45,7 +45,7 @@ export function updateEvent(event : Event, callback : Function){
 export function getEvents(callback : Function){
     axios({
 		method: 'get',
-		url: URLS.SERVER + URLS.EVENT_DIR,
+		url: URLS.SERVER + URLS.ALL_EVENT_DIR,
 		headers: HEADERS,
 	})
 	.then(function (response) {

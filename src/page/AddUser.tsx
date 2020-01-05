@@ -172,7 +172,7 @@ export default class AddUser extends Component<{}, AddUserState> {
     return(
         <div className="gray" style={{"minHeight":"100vh"}}>
                 
-            <Header title="Agregar Usuario" navigate={true}></Header>
+            <Header title=" - Agregar Usuario" navigate={true}></Header>
             <Row className="mt-4 ml-0 mr-0"> 
                 <Col className="ml-5 mr-5 mb-2" md="4">
                     <label>Nombre*</label>

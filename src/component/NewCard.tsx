@@ -32,7 +32,7 @@ const NewCard =
           setOpen(false);
         };
         
-        console.log(event)
+        //console.log(event)
         return(
         <Fragment>
         <Grid item xs={11} md={4} >
@@ -70,9 +70,9 @@ const NewCard =
           fullWidth={true}
       >
         <div className="date_flag" >{formatDate(event.getDate())}</div>
-        <DialogContent style={{marginTop:"-4rem"}}>
+        <DialogContent style={{marginTop:"-5rem"}}>
 
-            <CardContent style={{marginLeft:"4rem"}}className="card_body mt-0 p-0">
+            <CardContent style={{marginLeft:"4rem"}}className=" mt-0 mb-0 p-0">
               <Typography className="mt-0 pl-2 pr-2" variant="body2" color="textSecondary" component="p">
                 { event.timeI + " hasta " + event.timeF }
               </Typography>
@@ -87,6 +87,7 @@ const NewCard =
               }}
               image={"https://loremflickr.com/320/240"}
               title="Event image"
+              className="mt-0"
               
             />
               <CardHeader
@@ -137,11 +138,10 @@ export default NewCard;
 
 
 
-
+//converts date to the required display format
 const months = ["ENE", "FEB", "MAR","ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
 const formatDate = (date : Date) => {
-  let current_datetime = new Date()
-  let formatted_date = current_datetime.getDate() + " " + months[current_datetime.getMonth()] 
+  let formatted_date = date.getDate() + " " + months[date.getMonth()] 
   return formatted_date;
 }
 

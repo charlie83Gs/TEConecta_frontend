@@ -92,7 +92,7 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
     let myself = this;
     return(
         <div className="gray" style={{"minHeight":"100vh"}}>
-            <Header title="Administrar Eventos" navigate={true}></Header> 
+            <Header title=" - Administrar Eventos" navigate={true}></Header> 
             <Row className="m-0 dark_blue white_text" >
             <Col md="2">
               <h5>Nombre</h5>
