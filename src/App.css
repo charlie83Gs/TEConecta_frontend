@@ -139,3 +139,13 @@ body, #root{
 .mid_lenght{
   width: 10rem;
 }
+
+.inline_icon{
+  font-display: inline;
+  font-size: 2rem;
+}
+
+.single_line_text{
+    overflow: auto;
+    white-space: nowrap;
+}

@@ -13,18 +13,19 @@ import { green } from '@material-ui/core/colors';
 import ROUTES from '../config/routes';
 import DateFnsUtils from '@date-io/date-fns';
 import Event from '../model/event.model';
-import {addEvent} from '../services/event.service';
+import {addEvent, updateEvent} from '../services/event.service';
 import {getSession} from '../services/session.service';
 
 type AddEventState = {
   name: string,
   place: string,
+  location: string,
   date: Date,
   start: Date,
   end: Date,
   image: string,
   description: string,
-  hasAssistance : boolean,
+  assistance : boolean,
   space : number,
   nameError: boolean,
   startError: boolean,
@@ -57,24 +58,81 @@ export default class AddEvent extends Component<{}, AddEventState> {
 
   // Before the component mounts, we initialise our state
   componentWillMount() {
+
+    //load event if selected
+    var event : any = sessionStorage.getItem("event");
+    var name = "";
+    var start = new Date();
+    var place = "";
+    var location = "";
+    var date = new Date();
+    var end = new Date();
+    var image = "";
+    var description = "";
+    var assistance = false;
+    var space = 0;
+    var editMode =false;
+    
+
+    if(event){
+      event = JSON.parse(event);
+      console.log(event)
+      name = event.name;
+      location = event.location;
+      start = this.timeFromString(event.timeI);
+      place = event.place;
+      date = this.dateFromString(event.date);
+      end = this.timeFromString(event.timeF);
+      image = event.image;
+      description = event.description;
+      assistance = event.assistance;
+      space = event.space;
+      editMode = true;
+    }
     this.setState(
-      {   "name" : "",
-          "start" : new Date(),
-          "place" : "",
-          "date" :new Date(),
-          "end" :new Date(),
-          "image" : "",
-          "description" : "",
+      {   "name" : name,
+          "start" : start,
+          "place" : place,
+          "location" : location,
+          "date" : date,
+          "end" : end,
+          "image" : image,
+          "description" : description,
+          "assistance" : assistance,
+          "space" : space,
           "nameError" : false,
           "startError" : false,
           "placeError" : false,
           "dateError" : false,
           "endError" : false,
           "descriptionError" : false,
-          "editMode" : false,
+          "editMode" : editMode,
           "created" : false,
       })    
         
+  }
+
+  dateFromString = (date : string) : Date => {
+    var pieces = date.split("/");
+    var day = parseInt(pieces[0])
+    var month = parseInt(pieces[1])
+    var year = parseInt(pieces[2])
+
+    return new Date(year,month,day)
+  }
+
+  timeFromString = (date : string) : Date => {
+    var result = new Date();
+
+    var pieces = date.split(":");
+    var hours = parseInt(pieces[0])
+    var minutes = parseInt(pieces[1])
+    var seconds = parseInt(pieces[2])
+
+    result.setHours(hours);
+    result.setMinutes(minutes);
+    result.setSeconds(seconds);
+    return result;
   }
 
   handleSubmit = () => {
@@ -117,7 +175,7 @@ export default class AddEvent extends Component<{}, AddEventState> {
                                   "",
                                   formatDateToTime(this.state.start),
                                   formatDateToTime(this.state.end),
-                                  this.state.hasAssistance,
+                                  this.state.assistance,
                                   "Activo",
                                   this.state.space,
                                   session.id
@@ -125,6 +183,9 @@ export default class AddEvent extends Component<{}, AddEventState> {
     console.log("create event object")
     if(this.state.editMode){
       console.log("editing")
+      var eventSt : any = sessionStorage.getItem("event");
+      eventSt = eventSt ? JSON.parse(eventSt) : eventSt;
+      event.id = eventSt.id;
       sessionStorage.removeItem("event");
     }else
     addEvent(event,this.onEventAdded);
@@ -140,14 +201,20 @@ export default class AddEvent extends Component<{}, AddEventState> {
     let newValue : any = value;
     let update : any = {};
     update[name] = newValue;
+    //console.log(newValue)
     this.setState(update)
   }
+
   handleDateChange = (name : string) => (date: any) => {
     let newValue : any = date;
     let update : any = {};
     update[name] = newValue;
     this.setState(update)
   }
+
+  handleBooleanChange =  (name : string) => (event : any) => {
+    this.setState({ ...this.state, [name]: event.target.checked });
+  };
 
   render() {
     let myself = this;
@@ -160,6 +227,7 @@ export default class AddEvent extends Component<{}, AddEventState> {
               <label>Nombre</label>
                     <TextField
                     className ="login_input"
+                    value={this.state.name}
                     onChange = {myself.handleFieldChange("name")}
                     error = {myself.state.nameError}
                     label={myself.state.nameError ? "Por favor inserta un nombre correcto" : ""}
@@ -177,9 +245,10 @@ export default class AddEvent extends Component<{}, AddEventState> {
               />
               </Col>
               <Col md="3" className="ml-4">
-              <label>Lugar</label>
+              <label>Sede</label>
                     <TextField
                     className ="login_input"
+                    value={this.state.location}
                     onChange = {myself.handleFieldChange("place")}
                     error = {myself.state.nameError}
                     label={myself.state.nameError ? "Por favor inserta un lugar correcto" : ""}
@@ -214,18 +283,20 @@ export default class AddEvent extends Component<{}, AddEventState> {
                   <FormControlLabel style={{"display":"inline"}}
                     control={
                       <Checkbox
-                        value="checkedA"
                         color="primary"
+                        value = {this.state.assistance}
+                        onChange={myself.handleBooleanChange("assistance")}
                       />
                     }
                     label=""
                   />
+                  {myself.state.assistance &&
                   <TextField
                     style={{"width":"5rem" , "backgroundColor" : "white"}}
                     onChange = {myself.handleFieldChange("space")}
                     type="number"
-                    
-                    />
+                    value={myself.state.space}   
+                    />}
               </Col>
             </Row>
             <Row  className="justify-content-md-center ml-0 mr-0 mt-3">
@@ -239,6 +310,18 @@ export default class AddEvent extends Component<{}, AddEventState> {
                 style={{ display: "none" }}
               />
             </Button>
+            </Row>
+            <Row className="m-0">
+            <Col md="11" className="ml-4 mr-4">
+              <label>Ubicacion</label>
+              <TextField
+                    className ="login_input"
+                    value={this.state.place}
+                    onChange = {myself.handleFieldChange("place")}
+                    error = {myself.state.nameError}
+                    label={myself.state.nameError ? "Por favor inserta un lugar correcto" : ""}
+                    />
+              </Col>
             </Row>
             <Row className="m-0">
               <Col xs="11" className="ml-4 mr-4">

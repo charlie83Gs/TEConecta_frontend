@@ -151,7 +151,9 @@ export default class AddUser extends Component<{}, AddUserState> {
                             );
     if(this.state.editMode){
         var userSt : any = sessionStorage.getItem("user");
+        userSt = userSt ? JSON.parse(userSt) : userSt;
         user.password = user.password;
+        user.id = userSt.id;
         updateUser(user,this.onUserAdded);
         sessionStorage.removeItem("user");
     }else
