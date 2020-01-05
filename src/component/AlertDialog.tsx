@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default function AlertDialog({onAccept, onReject} : ({onAccept : any, onReject : any})) {
+export default function AlertDialog({onAccept, onReject, text} : ({onAccept : any, onReject : any ,text:string})) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -18,9 +18,9 @@ export default function AlertDialog({onAccept, onReject} : ({onAccept : any, onR
   };
 
   return (
-    <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open alert dialog
+    <Fragment>
+      <Button className="ml-2" variant="contained" color="secondary"  onClick={handleClickOpen}>
+        {text}
       </Button>
       <Dialog
         open={open}
@@ -44,6 +44,6 @@ export default function AlertDialog({onAccept, onReject} : ({onAccept : any, onR
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </Fragment>
   );
 }

@@ -104,11 +104,7 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
                   <Button className="ml-2" variant="contained" color="primary" >
                     Participantes
                   </Button>
-                  <Button className="ml-2" variant="contained" color="secondary" 
-                    onClick={()=>{myself.deleteEvent(event);window.location.reload();;}}>
-                    Cancelar
-                  </Button>
-                  <AlertDialog onAccept={() => {myself.setEvent(event) ;history.push(ROUTES.ADD_EVENT);}}  onReject={() => {}}/>
+                  <AlertDialog onAccept={() => {myself.setEvent(event) ;history.push(ROUTES.ADD_EVENT);}}  onReject={() => {}} text ={"cancelar"}/>
                   </Col>
                   )} />
                   </Row>
