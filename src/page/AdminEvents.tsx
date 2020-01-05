@@ -16,22 +16,20 @@ type AdminEventState = {
   events: any,
 }
 
-
 export default class AdminEvent extends Component<{}, AdminEventState> {
 
 
     constructor(props : any) { // does not compile in strict mode
         super(props)
         //load last used username
-        
     }
 
-
-
+    
 
   componentWillMount() {
     //var username : any = localStorage.getItem("username");
       this.setState({"events" : undefined})
+
       getEvents(this.onEventsLoaded);
   }
 
@@ -105,6 +103,7 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
                     Participantes
                   </Button>
                   <AlertDialog onAccept={() => {myself.setEvent(event) ;history.push(ROUTES.ADD_EVENT);}}  onReject={() => {}} text ={"cancelar"}/>
+
                   </Col>
                   )} />
                   </Row>
