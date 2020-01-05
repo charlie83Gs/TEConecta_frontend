@@ -11,7 +11,9 @@ import {Button} from '@material-ui/core';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ROUTES from '../config/routes';
 import AlertDialog from '../component/AlertDialog'
-
+import {updateEvent} from '../services/event.service'
+import {getSession} from '../services/session.service';
+import Event from '../model/event.model';
 type AdminEventState = {
   events: any,
 }
@@ -47,6 +49,44 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
     //deleteUser(user.id, ()=>{});
   }
 
+  onCancelEvent = (result : boolean) =>{
+  }
+
+  handleCancel = (event: Event) => {
+    //TODO validation
+    let stateUpdate : any = {}
+    let err : boolean = false
+    //reset status
+    stateUpdate["nameError"] = false;
+    stateUpdate["descriptionError"] = false;
+    stateUpdate["placeError"] = false;
+
+
+    this.setState(stateUpdate);
+    //console.log(err)
+    if(err) return;
+    var session = getSession();
+    //create a new event object
+    let newEvent : Event = new Event(
+                                  event.id,
+                                  event.name,
+                                  event.date,
+                                  event.description,
+                                  event.place,
+                                  "event",
+                                  event.location,
+                                  event.urlImgActivity,
+                                  event.timeI,
+                                  event.timeF,
+                                  event.assistance,
+                                  "Cancelado",
+                                  event.space,
+                                  session.id
+    );
+    console.log("cancel event object");
+    updateEvent(newEvent,this.onCancelEvent);
+
+  }
 
   render() {
     let myself = this;
@@ -102,8 +142,9 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
                   <Button className="ml-2" variant="contained" color="primary" >
                     Participantes
                   </Button>
-                  <AlertDialog onAccept={() => {myself.setEvent(event) ;history.push(ROUTES.ADD_EVENT);}}  onReject={() => {}} text ={"cancelar"}/>
-
+                  <AlertDialog onAccept={() => {this.handleCancel(event); history.push(ROUTES.ADMIN_EVENT);}}  onReject={() => {}} text ={"cancelar"} 
+                  titleText = {"¿Desea cancelar la actividad seleccionada?"}
+                  infoText = {"Una vez cancela no se puede activar nuevamente."}/>
                   </Col>
                   )} />
                   </Row>
