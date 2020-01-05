@@ -10,11 +10,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import {Button} from '@material-ui/core';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ROUTES from '../config/routes';
+//---------------------------------------------------
 
 type AdminEventState = {
   events: any,
 }
-
 
 export default class AdminEvent extends Component<{}, AdminEventState> {
 
@@ -22,15 +22,14 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
     constructor(props : any) { // does not compile in strict mode
         super(props)
         //load last used username
-        
     }
 
-
-
+    
 
   componentWillMount() {
     //var username : any = localStorage.getItem("username");
       this.setState({"events" : undefined})
+
       getEvents(this.onEventsLoaded);
   }
 
@@ -97,7 +96,7 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
                   <Col md="7"  className="my-auto">
                   
                   <Button variant="contained" color="primary" 
-                    onClick={()=>{myself.setEvent(event) ;history.push(ROUTES.ADD_USER);}}>
+                    onClick={()=>{myself.setEvent(event) ;history.push(ROUTES.ADD_EVENT);}}>
                     Actualizar
                   </Button>
                   <Button className="ml-2" variant="contained" color="primary" >
@@ -105,7 +104,7 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
                   </Button>
                   <Button className="ml-2" variant="contained" color="secondary" 
                     onClick={()=>{myself.deleteEvent(event);window.location.reload();;}}>
-                    Cancelar
+                    Cancelar Evento
                   </Button>
                   </Col>
                   )} />
