@@ -5,7 +5,7 @@ type CardProps = {
   paragraph: string
 }
 
-export const NewCard = 
+const NewCard = 
 ({ title, paragraph }: CardProps) => {
         return(
         <aside>
@@ -16,7 +16,4 @@ export const NewCard =
     }
 
     
-interface LoginProps {
-    
-}
-
+export default NewCard;

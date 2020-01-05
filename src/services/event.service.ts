@@ -29,7 +29,7 @@ export function updateEvent(event : Event, callback : Function){
     //console.log(user.toJson());
     axios({
 		method: 'patch',
-		url: URLS.SERVER + URLS.EVENT_DIR,
+		url: URLS.SERVER + URLS.EVENT_DIR + "/" + event.id,
 		headers: CreateHeaders(session.token),
 		data : event.toJsonNoId()
 	})
