@@ -92,7 +92,7 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
     let myself = this;
     return(
         <div className="gray" style={{"minHeight":"100vh"}}>
-            <Header title="Administrar Eventos"></Header> 
+            <Header title="Administrar Eventos" navigate={true}></Header> 
             <Row className="m-0 dark_blue white_text" >
             <Col md="2">
               <h5>Nombre</h5>
@@ -114,7 +114,7 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
                   <ListItem  key = {index} alignItems="flex-start">
                      <ListItemText 
                            primary={event.name + " - " + event.date }
-                           secondary={event.description}/>
+                           secondary={event.description.substring(0,Math.min(20))}/>
 
                   </ListItem >
                   </Col>

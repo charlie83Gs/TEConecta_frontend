@@ -46,6 +46,38 @@ export default class Event{
         this.owner = owner;
     }
 
+    static loadFromJson(data :any) : Event{
+        return new Event(
+        data.id,
+        data.name,
+        data.date,
+        data.description,
+        data.location,
+        data.type,
+        data.place,
+        data.urlImgActivity,
+        data.timeI,
+        data.timeF,
+        data.assistance,
+        data.state,
+        data.space,
+        data.fk_user,
+        )
+
+    }
+
+    getDate() : Date{
+        return dateFromString(this.date)
+    }
+
+    getTimeI(){
+        return timeFromString(this.timeI)
+    }
+
+    getTimeF(){
+        return timeFromString(this.timeF)
+    }
+
     toJson = () : any => {
         return {
             "id" : this.id,
@@ -85,3 +117,27 @@ export default class Event{
     }
 
 }
+
+const dateFromString = (date : string) : Date => {
+    var pieces = date.split("/");
+    var day = parseInt(pieces[0])
+    var month = parseInt(pieces[1])
+    var year = parseInt(pieces[2])
+  
+    return new Date(year,month,day)
+  }
+
+  
+  const timeFromString = (date : string) : Date => {
+    var result = new Date();
+
+    var pieces = date.split(":");
+    var hours = parseInt(pieces[0])
+    var minutes = parseInt(pieces[1])
+    var seconds = parseInt(pieces[2])
+
+    result.setHours(hours);
+    result.setMinutes(minutes);
+    result.setSeconds(seconds);
+    return result;
+  }
