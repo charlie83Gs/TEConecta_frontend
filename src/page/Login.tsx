@@ -123,13 +123,7 @@ export default class Login extends Component<{}, LoginState> {
             </Card>
             </Col>
         </Row>
-        <Route render={() => {
-            if (myself.state.session) {
-              return <Redirect push to={ROUTES.MENU} />;
-            }
-
-           }}
-        />
+        
 
         </div>
     )
