@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default function AlertDialog({onAccept, onReject, text} : ({onAccept : any, onReject : any ,text:string})) {
+export default function AlertDialog({onAccept, onReject, text , titleText , infoText} : ({onAccept : any, onReject : any ,text:string,titleText: string, infoText:string})) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -28,19 +28,18 @@ export default function AlertDialog({onAccept, onReject, text} : ({onAccept : an
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{titleText}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending anonymous location data to
-            Google, even when no apps are running.
+            {infoText}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => {handleClose(); if(onReject) onReject()}} color="primary">
-            Disagree
+          <Button onClick={() => {handleClose(); if(onReject) onReject()}} color="secondary">
+            Cancelar
           </Button>
           <Button onClick={() => {handleClose(); if(onAccept) onAccept()}} color="primary" autoFocus>
-            Agree
+            Aceptar
           </Button>
         </DialogActions>
       </Dialog>
