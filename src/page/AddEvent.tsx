@@ -187,9 +187,10 @@ export default class AddEvent extends Component<{}, AddEventState> {
       eventSt = eventSt ? JSON.parse(eventSt) : eventSt;
       event.id = eventSt.id;
       sessionStorage.removeItem("event");
+      updateEvent(event,this.onEventAdded);
     }else
-    addEvent(event,this.onEventAdded);
-
+      addEvent(event,this.onEventAdded);
+    console.log(event)
   }
 
   onEventAdded = (res : boolean) => {
@@ -204,6 +205,15 @@ export default class AddEvent extends Component<{}, AddEventState> {
     //console.log(newValue)
     this.setState(update)
   }
+
+  handleNumberChange = (name : string) => ({target : {value }} : {target : { value:any }}) => {
+    let newValue : any = value;
+    let update : any = {};
+    update[name] = parseInt(newValue);
+    //console.log(newValue)
+    this.setState(update)
+  }
+
 
   handleDateChange = (name : string) => (date: any) => {
     let newValue : any = date;
@@ -249,7 +259,7 @@ export default class AddEvent extends Component<{}, AddEventState> {
                     <TextField
                     className ="login_input"
                     value={this.state.location}
-                    onChange = {myself.handleFieldChange("place")}
+                    onChange = {myself.handleFieldChange("location")}
                     error = {myself.state.nameError}
                     label={myself.state.nameError ? "Por favor inserta un lugar correcto" : ""}
                     />
@@ -293,7 +303,7 @@ export default class AddEvent extends Component<{}, AddEventState> {
                   {myself.state.assistance &&
                   <TextField
                     style={{"width":"5rem" , "backgroundColor" : "white"}}
-                    onChange = {myself.handleFieldChange("space")}
+                    onChange = {myself.handleNumberChange("space")}
                     type="number"
                     value={myself.state.space}   
                     />}
@@ -334,6 +344,7 @@ export default class AddEvent extends Component<{}, AddEventState> {
                     multiline
                     rows="12"
                     variant="outlined"
+                    value={this.state.description}
                     />
               </Col>
             </Row>
@@ -342,7 +353,7 @@ export default class AddEvent extends Component<{}, AddEventState> {
                 <button 
                         className="mr-4 green teconecta_button mid_lenght"
                         onClick={this.handleSubmit}>
-                        Crear
+                        {myself.state.editMode ? "Editar" : "Crear"}
                 </button>
                 <button 
                         className="mr-4 ml-4 blue teconecta_button mid_lenght"

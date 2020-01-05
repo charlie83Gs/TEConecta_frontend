@@ -142,9 +142,11 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
                   <Button className="ml-2" variant="contained" color="primary" >
                     Participantes
                   </Button>
+
                   <AlertDialog onAccept={() => {this.handleCancel(event); history.push(ROUTES.ADMIN_EVENT);}}  onReject={() => {}} text ={"cancelar"} 
                   titleText = {"¿Desea cancelar la actividad seleccionada?"}
                   infoText = {"Una vez cancela no se puede activar nuevamente."}/>
+
                   </Col>
                   )} />
                   </Row>
