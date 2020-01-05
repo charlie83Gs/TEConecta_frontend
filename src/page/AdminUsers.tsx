@@ -50,7 +50,7 @@ export default class AdminUsers extends Component<{}, AdminUsersState> {
     let myself = this;
     return(
         <div className="gray" style={{"minHeight":"100vh"}}>
-            <Header title="Administrar Usuarios"></Header> 
+            <Header title="Administrar Usuarios" navigate={true}></Header> 
             {this.state.users ?
               <List>
               {this.state.users.map(

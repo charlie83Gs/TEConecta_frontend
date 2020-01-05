@@ -149,3 +149,24 @@ body, #root{
     overflow: auto;
     white-space: nowrap;
 }
+
+.date_flag{
+  position: relative;
+  top: 0px;
+  left: 1rem;
+  font-size: 1.8rem;
+  background-color: rgba(17, 76, 144, 0.7);
+  color: white;
+  width: 4rem;
+  z-index: 10;
+  justify-content: center;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+}
+
+
+
+
+.card_body{
+  height: 7.5rem;
+}

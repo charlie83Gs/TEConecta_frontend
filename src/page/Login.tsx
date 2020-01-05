@@ -104,7 +104,7 @@ export default class Login extends Component<{}, LoginState> {
 
     return(
         <div className="gray" style={{"minHeight":"100vh"}}>
-        <Header title="Ingresar"></Header>  
+        <Header title="Ingresar" navigate={true}></Header>  
         <Row className="mt-5 justify-content-center ml-0 mr-0">
             <Col xs="12" sm ="8" md= "8" lg= "5">
             <Card className="p-5">
