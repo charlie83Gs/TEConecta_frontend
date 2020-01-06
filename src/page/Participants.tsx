@@ -8,6 +8,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import {Col,Row} from 'reactstrap';
+import Divider from '@material-ui/core/Divider';
 
 type ParticipantsState = {
     participants: any,
@@ -33,8 +34,8 @@ export default class Participants extends Component<{}, ParticipantsState> {
         var event : Event | undefined;
         if(rawEvent){
             event = Event.loadFromJson(JSON.parse(rawEvent));
-            //getAssitance(event.id,this.onRegisterLoaded)
-            getAssitance("5df",this.onRegisterLoaded)
+            getAssitance(event.id,this.onRegisterLoaded)
+            //getAssitance("5df",this.onRegisterLoaded)
         }
 
         this.setState({
@@ -68,10 +69,12 @@ export default class Participants extends Component<{}, ParticipantsState> {
             </Col>
             </Row>
 
-            <List dense={true}>
+            <List dense={false} className="mr-3 ml-3">
+              
               {this.state.participants && this.state.participants.map(
                 (participant : any, index : number) => {
                 return (
+                <Fragment>
                 <ListItem key={index} className="participant_item">
                   <ListItemText
                     primary={participant.name }
@@ -83,6 +86,8 @@ export default class Participants extends Component<{}, ParticipantsState> {
                     primary={participant.email }
                   />
                 </ListItem>
+                <Divider variant="fullWidth" component="li" />
+                </Fragment>
                 )
                 }
                 )
