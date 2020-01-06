@@ -34,6 +34,23 @@ export default class User{
         this.manager = manager;
     }
 
+    
+    static loadFromJson(data :any) : User{
+        return new User(
+            data.id,
+            data.name,
+            data.phone,
+            data.location,
+            data.place,
+            data.description,
+            "",
+            data.password,
+            data.urlImgProfile,
+            data.manager           
+        )
+
+    }
+
     toJson = () : any => {
         return {
             "id" : this.email,

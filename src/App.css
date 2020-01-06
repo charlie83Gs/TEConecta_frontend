@@ -69,6 +69,11 @@ body, #root{
 .container_100{
   height: 100vh;
 }
+.container_100w{
+  width: 100vw;
+  overflow: hidden;
+}
+
 
 .header_container{
   height:60pt;
@@ -184,4 +189,20 @@ body, #root{
 
 .card_body{
   height: 7.5rem;
+}
+
+.w3rem{
+  width: 3rem;
+}
+
+.w6rem{
+  width: 6rem;
+}
+
+.w12rem{
+  width: 12rem;
+}
+
+.participant_item{
+  background-color: white;
 }

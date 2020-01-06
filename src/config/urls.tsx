@@ -4,6 +4,7 @@ const URLS = {
     LOGIN_DIR : "/users/login",
     ALL_EVENT_DIR : "/allactivities",
     EVENT_DIR : "/activities",
+    REGISTER_EVENT_DIR : "/assistances",
     
 }
 

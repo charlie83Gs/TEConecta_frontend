@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'; // let's also import Compone
 import {Col,Row,Container} from 'reactstrap';
 import Header from '../component/Header';
 import { Route } from "react-router-dom";
-import {getEvents} from '../services/event.service'
+import {getEvents,getEventsFiltered} from '../services/event.service'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
@@ -14,6 +14,7 @@ import AlertDialog from '../component/AlertDialog'
 import {updateEvent} from '../services/event.service'
 import {getSession} from '../services/session.service';
 import Event from '../model/event.model';
+import {eventSort} from '../component/eventSort';
 type AdminEventState = {
   events: any,
 }
@@ -32,12 +33,14 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
     //var username : any = localStorage.getItem("username");
       this.setState({"events" : undefined})
 
-      getEvents(this.onEventsLoaded);
+      getEventsFiltered(this.onEventsLoaded);
   }
 
   onEventsLoaded = (response : any) =>{
-      console.log("loaded")
-      console.log(response )
+      //console.log("loaded")
+      //console.log(response )
+
+      
       this.setState({"events" : response});
   }
 
@@ -113,7 +116,7 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
                   <Col md="2" >
                   <ListItem  key = {index} alignItems="flex-start">
                      <ListItemText 
-                           primary={event.name + " - " + event.date }
+                           primary={event.name}
                            secondary={event.description.substring(0,Math.min(20))}/>
 
                   </ListItem >
@@ -139,7 +142,8 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
                     onClick={()=>{myself.setEvent(event) ;history.push(ROUTES.ADD_EVENT);}}>
                     Actualizar
                   </Button>
-                  <Button className="ml-2" variant="contained" color="primary" >
+                  <Button className="ml-2" variant="contained" color="primary" 
+                  onClick={()=>{myself.setEvent(event) ;history.push(ROUTES.VIEW_PARTICIPANTS);}}>
                     Participantes
                   </Button>
 

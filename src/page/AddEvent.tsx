@@ -85,7 +85,7 @@ export default class AddEvent extends Component<{}, AddEventState> {
       end = this.timeFromString(event.timeF);
       image = event.image;
       description = event.description;
-      assistance = event.assistance;
+      assistance = (event.assistance );
       space = event.space;
       editMode = true;
     }

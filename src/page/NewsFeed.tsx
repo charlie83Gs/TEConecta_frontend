@@ -120,7 +120,7 @@ export default class NewsFeed extends Component<{}, NewsFeedState> {
     return (
       <div className="gray" style={{"minHeight":"100vh"}}>
       <Header title= "" navigate={false}/>
-      <div className="blue_container">
+      <div className="blue_container container_100w">
       <label className="mr-3 ml-2">Sede
       <FormControl className="ml-2">
         <Select
@@ -172,7 +172,7 @@ export default class NewsFeed extends Component<{}, NewsFeedState> {
       </FormControl>
       </label>
 
-      <label className="mr-3 ml-2">Grupo de interes
+      <label className="mr-3 ml-2">Grupo
       <FormControl className="ml-2">
         <Select
             labelId="demo-simple-select-label"

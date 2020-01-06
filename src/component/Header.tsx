@@ -5,6 +5,8 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import {Row} from 'reactstrap';
 import ROUTES from '../config/routes'
+import Avatar from '@material-ui/core/Avatar';
+
 type HeaderProps = {
   title: string,
   navigate : boolean | undefined 
@@ -20,7 +22,9 @@ const Header =
             )} />
             {session && 
             <Row className="ml-5 vcenter" style={{width:"80%"}}>
-              <AccountCircleIcon style={{ fontSize: 40 }}/>
+              <Avatar aria-label="recipe">
+                  {session.id[0]}
+                </Avatar>
               <label className="my-auto ml-1">{session.id}</label>
             </Row>
             }
@@ -49,7 +53,7 @@ const Header =
               <button 
                 style={{"position":"absolute","top":"3.5rem","right":"1rem"}}
                 className="mr-4 ml-4 blue teconecta_button mid_lenght"
-                onClick={()=>{history.push(ROUTES.ADMIN_USER)}}
+                onClick={()=>{history.push(ROUTES.LIST_USER)}}
                 >
                   Grupos Culturales
                   <AccountBoxIcon  className="ml-2" />

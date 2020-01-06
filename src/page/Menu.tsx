@@ -2,7 +2,8 @@ import React, { Component, Fragment } from 'react'; // let's also import Compone
 import {Col,Row,Container} from 'reactstrap';
 import Header from '../component/Header';
 import MenuItem from '../component/MenuItem';
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
+import {getSession} from '../services/session.service';
 
 //import icons
 import list from '../resources/list.svg';
@@ -11,6 +12,7 @@ import eventHistory from '../resources/eventHistoryA.svg';
 import user from '../resources/user.svg';
 import addUser from '../resources/addUserA.svg';
 import ROUTES from '../config/routes';
+import { readFileSync } from 'fs';
 
 
 
@@ -19,6 +21,21 @@ import ROUTES from '../config/routes';
 type MenuState = {
 
 }
+const ADMIN = "ADMIN";
+const ADMINREG= "ADMINREG";
+function isAdmin(roles : string[]) : boolean{
+    for (let index = 0; index < roles.length; index++) {
+        if(ADMIN == roles[index]) return true;        
+    }
+    return false
+}
+function isAdminReg(roles : string[]) : boolean{
+    for (let index = 0; index < roles.length; index++) {
+        if(ADMINREG == roles[index]) return true;        
+    }
+    return false
+}
+
 
 
 export default class Menu extends Component<{}, {}> {
@@ -40,21 +57,37 @@ export default class Menu extends Component<{}, {}> {
   // render will know everything!
   //justify-content-md-center
   render() {
-    
+    var session = getSession();
+    console.log(session)
     return(
         <div className="gray" style={{"minHeight":"100vh"}}>
             <Header title=" - Centro de administración" navigate={true}></Header> 
             <Row className="mt-4">
             <Route render={({ history}) => (
                 <Fragment>
-                <MenuItem icon={list} title = "Administrar Eventos" onClick={()=>{history.push(ROUTES.ADMIN_EVENT)}}/>
-                <MenuItem icon={addEvent} title = "Agregar Evento" onClick={()=>{history.push(ROUTES.ADD_EVENT)}}/>
-                <MenuItem icon={eventHistory} title = "Historial De Eventos" onClick={()=>{history.push(ROUTES.EVENT_HISTORY)}}/>
-                <MenuItem icon={user} title = "Administrar Usuarios" onClick={()=>{history.push(ROUTES.ADMIN_USER)}}/>
-                <MenuItem icon={addUser} title = "Agregar Usuario" onClick={()=>{history.push(ROUTES.ADD_USER)}}/>
+                {isAdminReg(session.roles) && 
+                    <Fragment>
+                        <MenuItem icon={list} title = "Administrar Eventos" onClick={()=>{history.push(ROUTES.ADMIN_EVENT)}}/>
+                        <MenuItem icon={addEvent} title = "Agregar Evento" onClick={()=>{history.push(ROUTES.ADD_EVENT); sessionStorage.removeItem("event")}}/>
+                    </Fragment>
+                }
+                {isAdmin(session.roles) && 
+                    <Fragment>
+                        <MenuItem icon={eventHistory} title = "Historial De Eventos" onClick={()=>{history.push(ROUTES.EVENT_HISTORY)}}/>
+                        <MenuItem icon={user} title = "Administrar Usuarios" onClick={()=>{history.push(ROUTES.ADMIN_USER)}}/>
+                        <MenuItem icon={addUser} title = "Agregar Usuario" onClick={()=>{history.push(ROUTES.ADD_USER)}}/>
+                    </Fragment>
+                }
                 </Fragment>
             )} />
             </Row>
+            <Route render={() => {
+            if (!session) {
+              return <Redirect push to={ROUTES.LOGIN} />;
+            }
+
+           }}
+         />
         </div>
         
     )
