@@ -57,6 +57,7 @@ export default class NewsFeed extends Component<{}, NewsFeedState> {
         newEvents.push(Event.loadFromJson(event));
       }
     )
+    newEvents = Event.sortByDate(newEvents)
     this.setState({"events" : newEvents , "options" : this.getOptionLists(newEvents)});
   }
 
