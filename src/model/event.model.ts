@@ -120,8 +120,8 @@ export default class Event{
 
 const dateFromString = (date : string) : Date => {
     var pieces = date.split("/");
-    var day = parseInt(pieces[0])
-    var month = parseInt(pieces[1])
+    var day = parseInt(pieces[1])
+    var month = parseInt(pieces[0])-1
     var year = parseInt(pieces[2])
    
     return new Date(year,month,day)
