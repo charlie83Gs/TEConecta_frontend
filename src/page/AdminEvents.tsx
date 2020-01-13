@@ -38,7 +38,7 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
 
   onEventsLoaded = (response : any) =>{
       //console.log("loaded")
-      //console.log(response )
+      console.log(response )
 
       
       this.setState({"events" : response});
@@ -57,17 +57,6 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
 
   handleCancel = (event: Event) => {
     //TODO validation
-    let stateUpdate : any = {}
-    let err : boolean = false
-    //reset status
-    stateUpdate["nameError"] = false;
-    stateUpdate["descriptionError"] = false;
-    stateUpdate["placeError"] = false;
-
-
-    this.setState(stateUpdate);
-    //console.log(err)
-    if(err) return;
     var session = getSession();
     //create a new event object
     let newEvent : Event = new Event(
@@ -114,7 +103,7 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
                 return (
                   <Row className="ml-0 mr-0 mb-2 p-2" style={{"backgroundColor":"#FFF"}} key = {index}>
                   <Col md="2" >
-                  <ListItem  key = {index} alignItems="flex-start">
+                  <ListItem  alignItems="flex-start">
                      <ListItemText 
                            primary={event.name}
                            secondary={event.description.substring(0,Math.min(20))}/>
@@ -122,14 +111,14 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
                   </ListItem >
                   </Col>
                   <Col md="2" >
-                  <ListItem  key = {index} alignItems="flex-start">
+                  <ListItem  alignItems="flex-start">
                      <ListItemText 
                            primary={ event.date}/>
 
                   </ListItem >
                   </Col>
                   <Col md="1" >
-                  <ListItem  key = {index} alignItems="flex-start">
+                  <ListItem  alignItems="flex-start">
                      <ListItemText 
                            primary={event.space}/>
 

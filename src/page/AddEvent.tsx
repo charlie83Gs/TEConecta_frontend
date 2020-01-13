@@ -14,7 +14,12 @@ import ROUTES from '../config/routes';
 import DateFnsUtils from '@date-io/date-fns';
 import Event from '../model/event.model';
 import {addEvent, updateEvent} from '../services/event.service';
+import {uploadImage} from '../services/image.service';
+import {getImageDownloadPath} from '../config/urls'
 import {getSession} from '../services/session.service';
+import {LOCATION_LIST} from '../config/locations';
+import {EVENT_TYPE_LIST} from '../config/eventTypes';
+
 
 type AddEventState = {
   name: string,
@@ -24,15 +29,19 @@ type AddEventState = {
   start: Date,
   end: Date,
   image: string,
+  imageFile: any,
   description: string,
   assistance : boolean,
   space : number,
+  type : string,
   nameError: boolean,
   startError: boolean,
   placeError: boolean,
+  locationError: boolean,
   dateError: boolean,
   endError: boolean,
   descriptionError: boolean,
+  typeError: boolean,
   editMode: boolean,
   created: boolean
 }
@@ -68,6 +77,7 @@ export default class AddEvent extends Component<{}, AddEventState> {
     var date = new Date();
     var end = new Date();
     var image = "";
+    var type = "";
     var description = "";
     var assistance = false;
     var space = 0;
@@ -83,7 +93,8 @@ export default class AddEvent extends Component<{}, AddEventState> {
       place = event.place;
       date = this.dateFromString(event.date);
       end = this.timeFromString(event.timeF);
-      image = event.image;
+      image = event.urlImgActivity;
+      type = event.type;
       description = event.description;
       assistance = (event.assistance );
       space = event.space;
@@ -97,14 +108,17 @@ export default class AddEvent extends Component<{}, AddEventState> {
           "date" : date,
           "end" : end,
           "image" : image,
+          "type" : type,
           "description" : description,
           "assistance" : assistance,
           "space" : space,
           "nameError" : false,
           "startError" : false,
           "placeError" : false,
+          "locationError" : false,
           "dateError" : false,
           "endError" : false,
+          "typeError" : false,
           "descriptionError" : false,
           "editMode" : editMode,
           "created" : false,
@@ -113,12 +127,8 @@ export default class AddEvent extends Component<{}, AddEventState> {
   }
 
   dateFromString = (date : string) : Date => {
-    var pieces = date.split("/");
-    var day = parseInt(pieces[0])
-    var month = parseInt(pieces[1])
-    var year = parseInt(pieces[2])
-
-    return new Date(year,month,day)
+   
+    return new Date(date)
   }
 
   timeFromString = (date : string) : Date => {
@@ -143,6 +153,8 @@ export default class AddEvent extends Component<{}, AddEventState> {
     stateUpdate["nameError"] = false;
     stateUpdate["descriptionError"] = false;
     stateUpdate["placeError"] = false;
+    stateUpdate["locationError"] = false;
+    stateUpdate["typeError"] = false;
 
     //mark error on unfilled fields
     if(this.state.name.length < 1){
@@ -153,6 +165,14 @@ export default class AddEvent extends Component<{}, AddEventState> {
         err = true;
         stateUpdate["placeError"] = true;
     }
+    if(this.state.type.length < 1){
+      err = true;
+      stateUpdate["typeError"] = true;
+  }
+    if(this.state.location.length < 1){
+      err = true;
+      stateUpdate["locationError"] = true;
+  }
     if(this.state.description.length < 1){
         err = true;
         stateUpdate["descriptionError"] = true;
@@ -164,15 +184,24 @@ export default class AddEvent extends Component<{}, AddEventState> {
     if(err) return;
     var session = getSession();
     //create a new event object
+    console.log(this.state.image)
+    var imageUrl = this.state.image;
+    if(this.state.imageFile){
+      var activity_name = "Activity" + this.state.name.replace(/\s+/g, '');
+      var imageUrl = getImageDownloadPath(activity_name,this.state.imageFile);
+      console.log(imageUrl);
+      console.log(this.state.imageFile);
+      uploadImage(activity_name, this.state.imageFile,()=>{console.log("upload executed multipart")});
+    }
     let event : Event = new Event(
                                   "",
                                   this.state.name,
-                                  this.state.date.toLocaleDateString("en-US"),
+                                  this.state.date.toISOString(),
                                   this.state.description,
                                   this.state.location,
-                                  "event",
+                                  this.state.type,
                                   this.state.place,
-                                  "",
+                                  imageUrl,
                                   formatDateToTime(this.state.start),
                                   formatDateToTime(this.state.end),
                                   this.state.assistance,
@@ -202,9 +231,11 @@ export default class AddEvent extends Component<{}, AddEventState> {
     let newValue : any = value;
     let update : any = {};
     update[name] = newValue;
-    //console.log(newValue)
+    console.log(newValue)
     this.setState(update)
   }
+
+  
 
   handleNumberChange = (name : string) => ({target : {value }} : {target : { value:any }}) => {
     let newValue : any = value;
@@ -214,13 +245,27 @@ export default class AddEvent extends Component<{}, AddEventState> {
     this.setState(update)
   }
 
-
   handleDateChange = (name : string) => (date: any) => {
     let newValue : any = date;
     let update : any = {};
     update[name] = newValue;
     this.setState(update)
   }
+
+  handleImageChange = (name : string) => ({target : {files }} : {target : { files:any }}) => {
+    let newValue : any = files[0];
+    let update : any = {};
+    update[name] = newValue;
+    //console.log(newValue)
+    //this.handleImageUpload(files[0],"activityX")
+    this.setState(update)
+  }
+  //upload image
+  /*handleImageUpload = (image : any, activity_name : string) => { 
+    activity_name = activity_name.replace(/\s+/g, '');
+    uploadImage("Activity" + activity_name,image,()=>{console.log("upload executed multipart")});
+    //uploadImage("uploadImageJson",image,()=>{console.log("upload executed json")});
+  }*/
 
   handleBooleanChange =  (name : string) => (event : any) => {
     this.setState({ ...this.state, [name]: event.target.checked });
@@ -256,13 +301,29 @@ export default class AddEvent extends Component<{}, AddEventState> {
               </Col>
               <Col md="3" className="ml-4">
               <label>Sede</label>
-                    <TextField
+           
+                    <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
                     className ="login_input"
+                    displayEmpty 
                     value={this.state.location}
                     onChange = {myself.handleFieldChange("location")}
-                    error = {myself.state.nameError}
-                    label={myself.state.nameError ? "Por favor inserta un lugar correcto" : ""}
-                    />
+                    error = {myself.state.locationError}
+                    >
+                    <MenuItem value="">
+                      <em>Ninguna</em>
+                    </MenuItem>
+                    {
+                      LOCATION_LIST.map(
+                        (location : string, index : number) => {
+                          return(
+                          <MenuItem key={index} value={location}>{location}</MenuItem>        
+                          )
+                        }
+                      )
+                    }
+                </Select>
               </Col>
             </Row>
             <Row className="m-0">
@@ -289,6 +350,36 @@ export default class AddEvent extends Component<{}, AddEventState> {
               />
               </Col>
               <Col md="3" className="ml-4">
+              <label>Tipo</label>
+           
+                    <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    className ="login_input"
+                    displayEmpty 
+                    value={this.state.type}
+                    onChange = {myself.handleFieldChange("type")}
+                    error = {myself.state.typeError}
+                    >
+                    <MenuItem value="">
+                      <em>Ninguno</em>
+                    </MenuItem>
+                    {
+                      EVENT_TYPE_LIST.map(
+                        (tipo : string, index : number) => {
+                          return(
+                          <MenuItem key={index} value={tipo}>{tipo}</MenuItem>        
+                          )
+                        }
+                      )
+                    }
+                </Select>
+              </Col>
+              
+            </Row>
+            <Row className="m-0 mt-2 ">
+            
+              <Col md="3" className="ml-4">
                   <label>Existe Cupo?</label><br></br>
                   <FormControlLabel style={{"display":"inline"}}
                     control={
@@ -302,14 +393,14 @@ export default class AddEvent extends Component<{}, AddEventState> {
                   />
                   {myself.state.assistance &&
                   <TextField
-                    style={{"width":"5rem" , "backgroundColor" : "white"}}
+                    style={{"width":"12rem" , "backgroundColor" : "white"}}
                     onChange = {myself.handleNumberChange("space")}
                     type="number"
                     value={myself.state.space}   
                     />}
               </Col>
-            </Row>
-            <Row  className="justify-content-md-center ml-0 mr-0 mt-3">
+              </Row>
+            <Row  className="justify-content-center ml-0 mr-0 mt-3">
             <Button
               variant="contained"
               component="label"
@@ -318,6 +409,7 @@ export default class AddEvent extends Component<{}, AddEventState> {
               <input
                 type="file"
                 style={{ display: "none" }}
+                onChange={myself.handleImageChange("imageFile")}
               />
             </Button>
             </Row>

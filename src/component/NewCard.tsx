@@ -58,7 +58,7 @@ const NewCard =
                 marginTop: "-4rem",
                 
               }}
-              image={"https://loremflickr.com/320/240"}
+              image={event.urlImgActivity}
               title="Event image"
               
             />
@@ -97,7 +97,7 @@ const NewCard =
 
                 
               }}
-              image={"https://loremflickr.com/320/240"}
+              image={event.urlImgActivity}
               title="Event image"
               className="mt-0"
               

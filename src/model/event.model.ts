@@ -128,12 +128,7 @@ const compareEventDate = (event : Event ,event2 : Event) =>{
     return 0;
 }
 const dateFromString = (date : string) : Date => {
-    var pieces = date.split("/");
-    var day = parseInt(pieces[1])
-    var month = parseInt(pieces[0])-1
-    var year = parseInt(pieces[2])
-   
-    return new Date(year,month,day)
+    return new Date(date)
   }
 
   

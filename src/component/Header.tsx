@@ -16,12 +16,16 @@ const Header =
 ({ title , navigate}: HeaderProps) => {
       var session = getSession();  
       return(
-        <div className="header_container">
+        <div className="header_container p-2">
             <Route render={({ history}) => (
-              <h2 style={{cursor:"pointer"}}onClick={()=>{history.push(ROUTES.NEWS_FEED)}} className="p-3 d-inline single_line_text" >{ "TEConecta  " + title }</h2>
+              <h2 style={{cursor:"pointer"}}
+                onClick={()=>{history.push(ROUTES.NEWS_FEED)}} 
+                className="p-3 d-inline single_line_text mt" >
+                  { "TEConecta  " + title }
+              </h2>
             )} />
             {session && 
-            <Row className="ml-5 vcenter" style={{width:"80%"}}>
+            <Row className="ml-5 vcenter mt-1" style={{width:"80%"}}>
               <Avatar aria-label="recipe">
                   {session.id[0]}
                 </Avatar>
@@ -45,9 +49,12 @@ const Header =
               <button 
                 style={{"position":"absolute","top":"0.5rem","right":"1rem"}}
                 className="mr-4 ml-4 blue teconecta_button mid_lenght"
-                onClick={()=>{history.push(ROUTES.LOGIN)}}
+                onClick={()=>{
+                  var target = session ? ROUTES.MENU : ROUTES.LOGIN
+                  history.push(target)
+                }}
                 >
-                  Iniciar sesion
+                  {session ? "Menu Principal" : "Iniciar Sesion"}
                   <AccountCircleIcon className="ml-4" />
               </button>
               <button 
@@ -55,7 +62,7 @@ const Header =
                 className="mr-4 ml-4 blue teconecta_button mid_lenght"
                 onClick={()=>{history.push(ROUTES.LIST_USER)}}
                 >
-                  Grupos Culturales
+                  Grupos De Interes
                   <AccountBoxIcon  className="ml-2" />
               </button>
             </Fragment>
