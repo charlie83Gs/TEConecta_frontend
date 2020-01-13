@@ -8,6 +8,9 @@ import AddUser from './page/AddUser';
 import AdminEvents from './page/AdminEvents';
 import AdminUsers from './page/AdminUsers';
 import EventHistory from './page/EventHistory';
+import UserList from './page/UserList';
+import ViewUser from './page/ViewUser';
+import Participants from './page/Participants';
 import './App.css';
 import ROUTES from './config/routes'
 import {
@@ -47,9 +50,22 @@ const App: React.FC = () => {
           <Route path={ROUTES.EVENT_HISTORY}>
             <EventHistory />
           </Route>
+          <Route path={ROUTES.LIST_USER}>
+            <UserList />
+          </Route>
+          <Route path={ROUTES.VIEW_PARTICIPANTS}>
+            <Participants />
+          </Route>
+          <Route path={ROUTES.VIEW_USER}>
+            <ViewUser />
+          </Route>
+
+
+          
           <Route path={ROUTES.NEWS_FEED}>
             <NewsFeed />
           </Route>
+          
         </Switch>
     </Router>
   );

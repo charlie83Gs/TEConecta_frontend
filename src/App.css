@@ -57,6 +57,11 @@ body, #root{
   background-color: white;
 }
 
+.menu_input{
+  width: 12rem;
+  background-color: white;
+}
+
 .small_font{
   font-size: 8pt;
 }
@@ -64,13 +69,28 @@ body, #root{
 .container_100{
   height: 100vh;
 }
+.container_100w{
+  width: 100vw;
+  overflow: hidden;
+}
+
 
 .header_container{
-  height:60pt;
+  height:75pt;
   background-color: #002855;
   color: white;
   margin-top: 0;
 }
+
+
+.blue_container{
+  background-color: #002855;
+  color: white;
+  margin-top: 0;
+  min-width: 100vw;
+  padding: 0.5rem;
+}
+
 
 .menu_item{
   min-height: 15rem;
@@ -169,4 +189,20 @@ body, #root{
 
 .card_body{
   height: 7.5rem;
+}
+
+.w3rem{
+  width: 3rem;
+}
+
+.w6rem{
+  width: 6rem;
+}
+
+.w12rem{
+  width: 12rem;
+}
+
+.participant_item{
+  background-color: white;
 }

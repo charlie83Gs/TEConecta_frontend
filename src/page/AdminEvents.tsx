@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'; // let's also import Compone
 import {Col,Row,Container} from 'reactstrap';
 import Header from '../component/Header';
 import { Route } from "react-router-dom";
-import {getEvents} from '../services/event.service'
+import {getEvents,getEventsFiltered} from '../services/event.service'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
@@ -14,6 +14,7 @@ import AlertDialog from '../component/AlertDialog'
 import {updateEvent} from '../services/event.service'
 import {getSession} from '../services/session.service';
 import Event from '../model/event.model';
+import {eventSort} from '../component/eventSort';
 type AdminEventState = {
   events: any,
 }
@@ -32,12 +33,14 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
     //var username : any = localStorage.getItem("username");
       this.setState({"events" : undefined})
 
-      getEvents(this.onEventsLoaded);
+      getEventsFiltered(this.onEventsLoaded);
   }
 
   onEventsLoaded = (response : any) =>{
-      console.log("loaded")
+      //console.log("loaded")
       console.log(response )
+
+      
       this.setState({"events" : response});
   }
 
@@ -54,17 +57,6 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
 
   handleCancel = (event: Event) => {
     //TODO validation
-    let stateUpdate : any = {}
-    let err : boolean = false
-    //reset status
-    stateUpdate["nameError"] = false;
-    stateUpdate["descriptionError"] = false;
-    stateUpdate["placeError"] = false;
-
-
-    this.setState(stateUpdate);
-    //console.log(err)
-    if(err) return;
     var session = getSession();
     //create a new event object
     let newEvent : Event = new Event(
@@ -92,7 +84,7 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
     let myself = this;
     return(
         <div className="gray" style={{"minHeight":"100vh"}}>
-            <Header title="Administrar Eventos" navigate={true}></Header> 
+            <Header title=" - Administrar Eventos" navigate={true}></Header> 
             <Row className="m-0 dark_blue white_text" >
             <Col md="2">
               <h5>Nombre</h5>
@@ -111,22 +103,22 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
                 return (
                   <Row className="ml-0 mr-0 mb-2 p-2" style={{"backgroundColor":"#FFF"}} key = {index}>
                   <Col md="2" >
-                  <ListItem  key = {index} alignItems="flex-start">
+                  <ListItem  alignItems="flex-start">
                      <ListItemText 
-                           primary={event.name + " - " + event.date }
+                           primary={event.name}
                            secondary={event.description.substring(0,Math.min(20))}/>
 
                   </ListItem >
                   </Col>
                   <Col md="2" >
-                  <ListItem  key = {index} alignItems="flex-start">
+                  <ListItem  alignItems="flex-start">
                      <ListItemText 
                            primary={ event.date}/>
 
                   </ListItem >
                   </Col>
                   <Col md="1" >
-                  <ListItem  key = {index} alignItems="flex-start">
+                  <ListItem  alignItems="flex-start">
                      <ListItemText 
                            primary={event.space}/>
 
@@ -139,7 +131,8 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
                     onClick={()=>{myself.setEvent(event) ;history.push(ROUTES.ADD_EVENT);}}>
                     Actualizar
                   </Button>
-                  <Button className="ml-2" variant="contained" color="primary" >
+                  <Button className="ml-2" variant="contained" color="primary" 
+                  onClick={()=>{myself.setEvent(event) ;history.push(ROUTES.VIEW_PARTICIPANTS);}}>
                     Participantes
                   </Button>
 

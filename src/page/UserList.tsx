@@ -11,17 +11,17 @@ import {Button} from '@material-ui/core';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ROUTES from '../config/routes';
 import User from '../model/user.model'
+import FormControl from '@material-ui/core/FormControl';
 import {userSort} from '../component/userSort';
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
-import FormControl from '@material-ui/core/FormControl';
 
-type AdminUsersState = {
+type UserListState = {
   users: User[],
   search: string,
 }
 
-export default class AdminUsers extends Component<{}, AdminUsersState> {
+export default class UserList extends Component<{}, UserListState> {
 
 
     constructor(props : any) { // does not compile in strict mode
@@ -37,23 +37,32 @@ export default class AdminUsers extends Component<{}, AdminUsersState> {
       this.setState(
         {
           "users" : [],
-          "search" :""        
-        })
+          "search" :""
+        }
+        )
       getUsers(this.onUsersLoaded);
   }
 
   onUsersLoaded = (response : any) =>{
-    console.log(response)
-    var userList : User[] = [];
-    if(response){
-      response.forEach(
-        (user : any) =>{
-            userList.push(User.loadFromJson(user));
-        }
-      )
-    }
+      console.log(response)
+      var userList : User[] = [];
+      if(response){
+        response.forEach(
+          (user : any) =>{
+              userList.push(User.loadFromJson(user));
+          }
+        )
+      }
 
-    this.setState({"users" : userList});
+      this.setState({"users" : userList});
+  }
+
+  setUser = (user: any) => { 
+    sessionStorage.setItem("user", JSON.stringify(user));
+  }
+
+  deleteUser = (user: any) => { 
+    deleteUser(user.id, ()=>{});
   }
 
   handleFieldChange = (name : string) => ({target : {value }} : {target : { value:any }}) => {
@@ -76,21 +85,12 @@ export default class AdminUsers extends Component<{}, AdminUsersState> {
   }
 
 
-  setUser = (user: any) => { 
-    sessionStorage.setItem("user", JSON.stringify(user));
-  }
-
-  deleteUser = (user: any) => { 
-    deleteUser(user.id, ()=>{});
-  }
-
-
   render() {
     let myself = this;
     var filtered = this.onFilterChange();
     return(
         <div className="gray" style={{"minHeight":"100vh"}}>
-            <Header title="Administrar Usuarios" navigate={true}></Header>
+          <Header title="Administrar Usuarios" navigate={true}></Header> 
             <div className="blue_container container_100w pt-4 m-0">
               <label className="mr-3 ml-2">
               <label className="w6rem">
@@ -106,30 +106,34 @@ export default class AdminUsers extends Component<{}, AdminUsersState> {
             </FormControl>
             </label>
             </div>
-            {filtered ?
+            
+            {this.state.users ?
               <List>
               {filtered.map(
                 (user : any,index : number) =>{
                 return (
                   <Row className="ml-0 mr-0 mb-2 p-2" style={{"backgroundColor":"#FFF"}}>
-                  <Col md="6" >
+                  <Col md="4" >
                   <ListItem  key = {index} alignItems="flex-start">
                      <ListItemText 
                            primary={user.name}
                            secondary={user.id + " - " + user.location}/>
                   </ListItem >
                   </Col>
+                  <Col md="3" >
+                  <ListItem  key = {index} alignItems="flex-start">
+                     <ListItemText 
+                           primary={"numero : " + user.phone}/>
+                  </ListItem >
+                  </Col>
                   <Route render={({ history}) => (
-                  <Col md="4"  className="my-auto">
+                  <Col md="3"  className="my-auto">
                   
                   <Button variant="contained" color="primary" 
-                    onClick={()=>{myself.setUser(user);history.push(ROUTES.ADD_USER);}}>
-                    Edit
+                    onClick={()=>{myself.setUser(user);history.push(ROUTES.VIEW_USER);}}>
+                    View
                   </Button>
-                  <Button className="ml-5" variant="contained" color="secondary" 
-                    onClick={()=>{myself.deleteUser(user);window.location.reload();;}}>
-                    Delete
-                  </Button>
+  
                   </Col>
                   )} />
                   </Row>
