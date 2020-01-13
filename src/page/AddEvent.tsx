@@ -274,7 +274,7 @@ export default class AddEvent extends Component<{}, AddEventState> {
   render() {
     let myself = this;
     return(
-        <div className="gray" style={{"minHeight":"100vh"}}>
+        <div id="fb-root" className="gray" style={{"minHeight":"100vh"}}>
             <Header title=" - Agregar Evento" navigate={true}></Header> 
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <Row className="m-0">
@@ -448,9 +448,11 @@ export default class AddEvent extends Component<{}, AddEventState> {
                         {myself.state.editMode ? "Editar" : "Crear"}
                 </button>
                 <button 
-                        className="mr-4 ml-4 blue teconecta_button mid_lenght"
-                        onClick={this.handleSubmit}>
-                        Facebook
+                        className="mr-4 blue teconecta_button mid_lenght" 
+                        data-href="https://facebook.com" //Aqui va el link de la pagina de facebook a compartir 
+                        data-layout="button" data-size="large">
+                          <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=example.org" 
+                          className="fb-xfbml-parse-ignore">Compartir</a>
                 </button>
                 <Route render={({ history}) => (
                 <button 
