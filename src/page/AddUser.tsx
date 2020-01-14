@@ -153,11 +153,11 @@ export default class AddUser extends Component<{}, AddUserState> {
     console.log(this.state.image)
     var imageUrl = this.state.image;
     if(this.state.imageFile){
-        var user_name = "User" + this.state.name.replace(/\s+/g, '');
-        var imageUrl = getImageDownloadPath(user_name,this.state.imageFile);
+        var activity_name = "Activity" + this.state.name.replace(/\s+/g, '');
+        var imageUrl = getImageDownloadPath(activity_name,this.state.imageFile);
         console.log(imageUrl);
         console.log(this.state.imageFile);
-        uploadImage(user_name, this.state.imageFile,()=>{console.log("upload executed multipart")});
+        uploadImage(activity_name, this.state.imageFile,()=>{console.log("upload executed multipart")});
       }
     var user: User = new User(
                             "0",
