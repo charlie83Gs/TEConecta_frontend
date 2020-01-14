@@ -451,7 +451,7 @@ export default class AddEvent extends Component<{}, AddEventState> {
                         className="mr-4 blue teconecta_button mid_lenght" 
                         data-href="https://facebook.com" //Aqui va el link de la pagina de facebook a compartir 
                         data-layout="button" data-size="large">
-                          <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=example.org" 
+                          <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fboiling-springs-28349.herokuapp.com%2F&amp;src=sdkpreparse" 
                           className="fb-xfbml-parse-ignore">Compartir</a>
                 </button>
                 <Route render={({ history}) => (
