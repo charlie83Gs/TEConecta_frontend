@@ -12,6 +12,8 @@ import {eventSort} from '../component/eventSort';
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 
+import Footer from '../component/Footer';
+
 // the clock's state has one field: The current time, based upon the
 // JavaScript class Date
 type NewsFeedState = {
@@ -233,7 +235,9 @@ export default class NewsFeed extends Component<{}, NewsFeedState> {
                 )
       }
       </Grid>
+      
       </div>
+      <Footer />
       </div>
     )
   }
