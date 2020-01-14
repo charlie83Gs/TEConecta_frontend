@@ -14,6 +14,7 @@ import addUser from '../resources/addUserA.svg';
 import ROUTES from '../config/routes';
 import { readFileSync } from 'fs';
 import exit from '../resources/exit.svg';
+import Footer from '../component/Footer';
 
 // the clock's state has one field: The current time, based upon the
 // JavaScript class Date
@@ -89,6 +90,7 @@ export default class Menu extends Component<{}, {}> {
 
            }}
          />
+         <Footer />
         </div>
         
     )
