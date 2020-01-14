@@ -5,8 +5,12 @@ import { Route, Redirect } from "react-router-dom";
 import { FormLabel,MenuItem,Select,FormGroup } from '@material-ui/core';
 import { FormControlLabel,Button,TextField, FormControl} from '@material-ui/core';
 import User from '../model/user.model';
+import {uploadImage} from '../services/image.service';
+import {getImageDownloadPath} from '../config/urls'
 import {addUser, updateUser} from '../services/user.services';
 import ROUTES from '../config/routes';
+import {LOCATION_LIST} from '../config/locations';
+
 const adminOptions = [
     { label: 'Grupo de interes' },
     { label: 'Administrador del sistema' }
@@ -16,17 +20,20 @@ const adminOptions = [
   type AddUserState = {
     name: string,
     description: string,
+    location: string,
     userType: number,
     place: string,
     email: string,
     phone: string,
     manager: string,
     image: string,
+    imageFile: any,
     nameError: boolean,
     descriptionError: boolean,
     userTypeError: boolean,
     placeError: boolean,
     emailError: boolean,
+    locationError: boolean,
     phoneError: boolean,
     managerError: boolean,
     imageError: boolean,
@@ -52,16 +59,21 @@ export default class AddUser extends Component<{}, AddUserState> {
     let name : string = "";
     let description : string = "";
     let place : string = "";
+    var location = "";
+    var image = "";
     let email : string = "";
     let phone : string = "";
     let manager : string = "";
     let editMode : boolean = false;
+
     if(user){
         user = JSON.parse(user);
         editMode = true;
         name = user.name;
+        location = user.location;
         description = user.description;
         place = user.place;
+        image = user.urlImgActivity;
         email = user.id;
         phone = user.phone;
         manager = user.manager;
@@ -72,14 +84,16 @@ export default class AddUser extends Component<{}, AddUserState> {
             "description" : description,
             "userType" : 0,
             "place" : place,
+            "location" : location,
             "email" : email,
             "phone" : phone,
             "manager" : manager,
-            "image" : "",
+            "image" : image,
             "nameError" : false,
             "descriptionError" : false,
             "userTypeError" : false,
             "placeError" : false,
+            "locationError" : false,
             "emailError" : false,
             "phoneError" : false,
             "managerError" : false,
@@ -96,6 +110,7 @@ export default class AddUser extends Component<{}, AddUserState> {
     this.setState(update)
   }
 
+
   handleSubmit = () => {
     //TODO validation
     let stateUpdate : any = {}
@@ -103,7 +118,7 @@ export default class AddUser extends Component<{}, AddUserState> {
     //reset status
     stateUpdate["nameError"] = false;
     stateUpdate["phoneError"] = false;
-    stateUpdate["placeError"] = false;
+    stateUpdate["locationError"] = false;
     stateUpdate["emailError"] = false;
     stateUpdate["managerError"] = false;
 
@@ -115,10 +130,6 @@ export default class AddUser extends Component<{}, AddUserState> {
     if(this.state.phone.length < 1){
         err = true;
         stateUpdate["phoneError"] = true;
-    }
-    if(this.state.place.length < 1){
-        err = true;
-        stateUpdate["placeError"] = true;
     }
     if(this.state.email.length < 1){
         err = true;
@@ -132,21 +143,32 @@ export default class AddUser extends Component<{}, AddUserState> {
         err = true;
         stateUpdate["managerError"] = true;
     }
+    if(this.state.location.length < 1){
+        err = true;
+        stateUpdate["locationError"] = true;
+    }
 
     this.setState(stateUpdate);
-
     if(err) return;
-
+    console.log(this.state.image)
+    var imageUrl = this.state.image;
+    if(this.state.imageFile){
+        var user_name = "User" + this.state.name.replace(/\s+/g, '');
+        var imageUrl = getImageDownloadPath(user_name,this.state.imageFile);
+        console.log(imageUrl);
+        console.log(this.state.imageFile);
+        uploadImage(user_name, this.state.imageFile,()=>{console.log("upload executed multipart")});
+      }
     var user: User = new User(
                             "0",
                             this.state.name,
                             this.state.phone,
-                            this.state.place,
+                            this.state.location,
                             this.state.place,
                             this.state.description,
                             this.state.email,
                             "1234",
-                            "",
+                            imageUrl,
                             this.state.manager,
                             );
     if(this.state.editMode){
@@ -164,6 +186,15 @@ export default class AddUser extends Component<{}, AddUserState> {
 
   onUserAdded = (result : boolean) =>{
     if(result) this.setState({created:true})
+  }
+
+  handleImageChange = (name : string) => ({target : {files }} : {target : { files:any }}) => {
+    let newValue : any = files[0];
+    let update : any = {};
+    update[name] = newValue;
+    //console.log(newValue)
+    //this.handleImageUpload(files[0],"activityX")
+    this.setState(update)
   }
 
 
@@ -212,14 +243,28 @@ export default class AddUser extends Component<{}, AddUserState> {
             <Row className=" ml-0 mr-0"> 
                 <Col className="ml-5 mr-5 mb-2" md="4">
                     <label>Sede*</label>
-                    <TextField
-                    id="standard-helperText"
+                    <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
                     className ="login_input"
-                    value={this.state.place}
-                    onChange = {myself.handleFieldChange("place")}
-                    error = {myself.state.placeError}
-                    label={myself.state.placeError ? "Por favor inserta una sede correcto" : ""}
-                    />
+                    displayEmpty 
+                    value={this.state.location}
+                    onChange = {myself.handleFieldChange("location")}
+                    error = {myself.state.locationError}
+                    >
+                    <MenuItem value="">
+                      <em>Ninguna</em>
+                    </MenuItem>
+                    {
+                      LOCATION_LIST.map(
+                        (location : string, index : number) => {
+                          return(
+                          <MenuItem key={index} value={location}>{location}</MenuItem>        
+                          )
+                        }
+                      )
+                    }
+                </Select>
                 </Col>
             </Row>
             <Row className=" ml-0 mr-0"> 
@@ -277,17 +322,18 @@ export default class AddUser extends Component<{}, AddUserState> {
                     />
                 </Col>
             </Row>
-            <Row className=" ml-0 mr-0"> 
-                <Col className="ml-5 mr-5 mb-2" md="4">
-                    <label>Imagen</label>
-                    <TextField
-                    id="standard-helperText"
-                    className ="login_input"
-                    onChange = {myself.handleFieldChange("image")}
-                    error = {myself.state.imageError}
-                    label={myself.state.imageError ? "Por favor inserta un email correcto" : ""}
-                    />
-                </Col>
+            <Row className=" justify-content-center ml-0 mr-0 mt-3"> 
+            <Button
+              variant="contained"
+              component="label"
+            >
+              Subir Imagen
+              <input
+                type="file"
+                style={{ display: "none" }}
+                onChange={()=>{myself.handleImageChange("imageFile");myself.handleFieldChange("image")}}
+              />
+            </Button>
             </Row>
             <Row className="justify-content-md-center pb-5 pt-3 mr-0 ml-0"> 
                 <button 
