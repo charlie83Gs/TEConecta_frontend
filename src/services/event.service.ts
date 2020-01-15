@@ -123,3 +123,20 @@ export function getAssitance(id:string,callback : Function){
 		callback(undefined);
 	});
 }
+
+
+export function getEventById(id : string, callback : Function){
+	//var session = getSession();
+    //console.log("getting " + id);
+    axios({
+		method: 'get',
+		url: URLS.SERVER + URLS.EVENT_BY_ID_DIR + "/" + id + "?filter[offset]=0&filter[limit]=100&filter[skip]=0",
+		headers: HEADERS,
+	})
+	.then(function (response) {
+        callback(response.data);
+	}, (error) => {
+		console.log(error);
+		callback(undefined);
+	});
+}
