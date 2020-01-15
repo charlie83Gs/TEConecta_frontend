@@ -139,7 +139,7 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
                     Participantes
                   </Button>
                   <a target="_blank" 
-                          href={"https://www.facebook.com/sharer/sharer.php?u=https://render-tron.appspot.com/render/"+URLS.DOMAIN + ROUTES.VIEW_EVENT +"/"+} 
+                          href={"https://www.facebook.com/sharer/sharer.php?u=https://render-tron.appspot.com/render/"+URLS.DOMAIN + ROUTES.VIEW_EVENT +"/"+ event.id} 
                           className="fb-xfbml-parse-ignore">
                     <Button className="ml-2" variant="contained" color="primary" 
                     >
