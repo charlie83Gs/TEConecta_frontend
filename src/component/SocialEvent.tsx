@@ -20,6 +20,7 @@ const SocialEvent =
             <Fragment>
                 {event && 
                     <Helmet>
+                        <meta name="fragment" content="!"></meta>
                         <meta property="og:title" content={event.name}/>
                         <meta property="og:url" content={URLS.DOMAIN + ROUTES.VIEW_EVENT +"/"+ event.id}/>
                         <meta property="og:description" content={event.description}/>
