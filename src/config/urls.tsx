@@ -1,6 +1,9 @@
+import ROUTES from './routes';
+
 const URLS = {
     SERVER : "https://teconecta-noisy-rhinocerous-te.mybluemix.net",
     DOMAIN : "https://boiling-springs-28349.herokuapp.com/",
+    PRERENDER : "https://service.prerender.io/", //this is a prerender service to enable facebook view publication metada
     //SERVER : "http://localhost:3000",
     ACCOUNT_DIR : "/account",
     LOGIN_DIR : "/users/login",
@@ -29,6 +32,10 @@ export function CreateHeaders(token : string ) {
     }
 
     return result;
+}
+
+export function getShareUrl(eventId : string){
+    return "https://www.facebook.com/sharer/sharer.php?u="+ URLS.PRERENDER + URLS.DOMAIN + ROUTES.VIEW_EVENT_NO_HANDLE +"/"+ eventId
 }
 
 export function getImageUploadPath(container: string){
