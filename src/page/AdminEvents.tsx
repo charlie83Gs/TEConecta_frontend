@@ -16,6 +16,7 @@ import {getSession} from '../services/session.service';
 import Event from '../model/event.model';
 import {eventSort} from '../component/eventSort';
 import FacebookIcon from '@material-ui/icons/Facebook';
+import URLS from '../config/urls'
 
 type AdminEventState = {
   events: any,
@@ -138,7 +139,7 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
                     Participantes
                   </Button>
                   <a target="_blank" 
-                          href={"https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fboiling-springs-28349.herokuapp.com/ViewEvent/" + event.id} 
+                          href={"https://www.facebook.com/sharer/sharer.php?u=https://render-tron.appspot.com/render/"+URLS.DOMAIN + ROUTES.VIEW_EVENT +"/"+} 
                           className="fb-xfbml-parse-ignore">
                     <Button className="ml-2" variant="contained" color="primary" 
                     >

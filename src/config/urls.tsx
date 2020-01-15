@@ -1,5 +1,6 @@
 const URLS = {
     SERVER : "https://teconecta-noisy-rhinocerous-te.mybluemix.net",
+    DOMAIN : "https://boiling-springs-28349.herokuapp.com/",
     //SERVER : "http://localhost:3000",
     ACCOUNT_DIR : "/account",
     LOGIN_DIR : "/users/login",
