@@ -57,6 +57,7 @@ export default class NewsFeed extends Component<{}, NewsFeedState> {
         newEvents.push(Event.loadFromJson(event));
       }
     )
+    newEvents = Event.sortByDate(newEvents)
     this.setState({"events" : newEvents , "options" : this.getOptionLists(newEvents)});
   }
 
@@ -115,13 +116,13 @@ export default class NewsFeed extends Component<{}, NewsFeedState> {
 
   // render will know everything!
   render() {
-
     var filtered = this.onFilterChange();
     return (
       <div className="gray" style={{"minHeight":"100vh"}}>
       <Header title= "" navigate={false}/>
-      <div className="blue_container container_100w">
-      <label className="mr-3 ml-2">Sede
+      <div className="blue_container container_100w pt-4 m-0">
+      <label className="mr-3 ml-2">
+        <label className="w6rem">Sede</label>
       <FormControl className="ml-2">
         <Select
             labelId="demo-simple-select-label"
@@ -132,7 +133,7 @@ export default class NewsFeed extends Component<{}, NewsFeedState> {
             onChange={this.handleFieldChange("location")}
             >
             <MenuItem value="">
-              <em>None</em>
+              <em>Todos</em>
             </MenuItem>
             {this.state.options &&
               this.state.options.locations.map(
@@ -146,7 +147,8 @@ export default class NewsFeed extends Component<{}, NewsFeedState> {
         </Select>
       </FormControl>
       </label>
-      <label className="mr-3 ml-2">Tipo
+      <label className="mr-3 ml-2">
+      <label className="w6rem">Tipo</label>
       <FormControl className="ml-2">
         <Select
             labelId="demo-simple-select-label"
@@ -157,7 +159,7 @@ export default class NewsFeed extends Component<{}, NewsFeedState> {
             onChange={this.handleFieldChange("type")}
             >
             <MenuItem value="">
-              <em>None</em>
+              <em>Todos</em>
             </MenuItem>
             {this.state.options &&
               this.state.options.types.map(
@@ -172,7 +174,8 @@ export default class NewsFeed extends Component<{}, NewsFeedState> {
       </FormControl>
       </label>
 
-      <label className="mr-3 ml-2">Grupo
+      <label className="mr-3 ml-2">
+      <label className="w6rem">Grupo</label>
       <FormControl className="ml-2">
         <Select
             labelId="demo-simple-select-label"
@@ -183,7 +186,7 @@ export default class NewsFeed extends Component<{}, NewsFeedState> {
             onChange={this.handleFieldChange("user")}
             >
             <MenuItem value="">
-              <em>None</em>
+              <em>Todos</em>
             </MenuItem>
             {this.state.options &&
               this.state.options.users.map(
@@ -199,8 +202,10 @@ export default class NewsFeed extends Component<{}, NewsFeedState> {
       </label>
 
       <label className="mr-3 ml-2">
-        <SearchIcon></SearchIcon>
-        Buscar
+        <label className="w6rem m">
+          Buscar
+          <SearchIcon className="ml-2"></SearchIcon>
+        </label>
       <FormControl className="ml-2">
         <TextField  
           className="menu_input"
@@ -211,7 +216,7 @@ export default class NewsFeed extends Component<{}, NewsFeedState> {
       </label>
       </div>
 
-      <div style={{ padding: "5rem" }}>
+      <div className="p-md-5 p-2">
       <Grid container spacing={6}
         alignItems="center"
       >

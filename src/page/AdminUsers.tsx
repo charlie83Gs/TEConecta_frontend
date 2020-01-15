@@ -10,9 +10,15 @@ import ListItemText from '@material-ui/core/ListItemText';
 import {Button} from '@material-ui/core';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ROUTES from '../config/routes';
+import User from '../model/user.model'
+import {userSort} from '../component/userSort';
+import TextField from '@material-ui/core/TextField';
+import SearchIcon from '@material-ui/icons/Search';
+import FormControl from '@material-ui/core/FormControl';
 
 type AdminUsersState = {
-  users: any,
+  users: User[],
+  search: string,
 }
 
 export default class AdminUsers extends Component<{}, AdminUsersState> {
@@ -28,14 +34,47 @@ export default class AdminUsers extends Component<{}, AdminUsersState> {
   // Before the component mounts, we initialise our state
   componentWillMount() {
     //var username : any = localStorage.getItem("username");
-      this.setState({"users" : undefined})
+      this.setState(
+        {
+          "users" : [],
+          "search" :""        
+        })
       getUsers(this.onUsersLoaded);
   }
 
   onUsersLoaded = (response : any) =>{
-      console.log(response )
-      this.setState({"users" : response});
+    console.log(response)
+    var userList : User[] = [];
+    if(response){
+      response.forEach(
+        (user : any) =>{
+            userList.push(User.loadFromJson(user));
+        }
+      )
+    }
+
+    this.setState({"users" : userList});
   }
+
+  handleFieldChange = (name : string) => ({target : {value }} : {target : { value:any }}) => {
+    let newValue : any = value;
+    let update : any = {};
+    update[name] = newValue;
+    console.log(newValue)
+    this.setState(update)
+  }
+  
+  //filter is updated on render
+  onFilterChange = () : User[] =>{
+      
+    var filtered : User[] = []  
+    if(this.state.users)
+      filtered = userSort(
+        this.state.search,
+        this.state.users)
+    return filtered;
+  }
+
 
   setUser = (user: any) => { 
     sessionStorage.setItem("user", JSON.stringify(user));
@@ -48,12 +87,28 @@ export default class AdminUsers extends Component<{}, AdminUsersState> {
 
   render() {
     let myself = this;
+    var filtered = this.onFilterChange();
     return(
         <div className="gray" style={{"minHeight":"100vh"}}>
-            <Header title="Administrar Usuarios" navigate={true}></Header> 
-            {this.state.users ?
+            <Header title="Administrar Usuarios" navigate={true}></Header>
+            <div className="blue_container container_100w pt-4 m-0">
+              <label className="mr-3 ml-2">
+              <label className="w6rem">
+                Buscar
+                <SearchIcon className="ml-2"></SearchIcon>
+              </label>
+            <FormControl className="ml-2">
+              <TextField  
+                className="menu_input"
+                value={this.state.search}
+                onChange={this.handleFieldChange("search")}
+              />
+            </FormControl>
+            </label>
+            </div>
+            {filtered ?
               <List>
-              {this.state.users.map(
+              {filtered.map(
                 (user : any,index : number) =>{
                 return (
                   <Row className="ml-0 mr-0 mb-2 p-2" style={{"backgroundColor":"#FFF"}}>

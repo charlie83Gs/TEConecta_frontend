@@ -66,6 +66,10 @@ export default class Event{
 
     }
 
+    static sortByDate(events : Event[]){
+        return events.sort(compareEventDate);
+    }
+
     getDate() : Date{
         return dateFromString(this.date)
     }
@@ -118,13 +122,15 @@ export default class Event{
 
 }
 
+const compareEventDate = (event : Event ,event2 : Event) =>{
+    if(event.getDate() > event2.getDate()) return 1;
+    if(event.getDate() < event2.getDate()) return -1;
+    return 0;
+}
 const dateFromString = (date : string) : Date => {
-    var pieces = date.split("/");
-    var day = parseInt(pieces[1])
-    var month = parseInt(pieces[0])-1
-    var year = parseInt(pieces[2])
-   
-    return new Date(year,month,day)
+
+    return new Date(date)
+
   }
 
   

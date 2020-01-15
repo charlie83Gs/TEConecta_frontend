@@ -11,6 +11,7 @@ import EventHistory from './page/EventHistory';
 import UserList from './page/UserList';
 import ViewUser from './page/ViewUser';
 import Participants from './page/Participants';
+import ViewEvent from './page/ViewEvent';
 import './App.css';
 import ROUTES from './config/routes'
 import {
@@ -59,7 +60,7 @@ const App: React.FC = () => {
           <Route path={ROUTES.VIEW_USER}>
             <ViewUser />
           </Route>
-
+          <Route path={ROUTES.VIEW_EVENT} component={ViewEvent} />
 
           
           <Route path={ROUTES.NEWS_FEED}>
