@@ -11,6 +11,7 @@ const ROUTES={
     VIEW_USER : "/ViewUser",
     VIEW_PARTICIPANTS : "/participants",
     VIEW_REGISTER : "/ViewRegister",
+    VIEW_EVENT : "/ViewEvent/:event_id",
 
 }
 

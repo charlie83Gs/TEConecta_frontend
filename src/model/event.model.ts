@@ -128,7 +128,9 @@ const compareEventDate = (event : Event ,event2 : Event) =>{
     return 0;
 }
 const dateFromString = (date : string) : Date => {
+
     return new Date(date)
+
   }
 
   

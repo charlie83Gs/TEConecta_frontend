@@ -5,6 +5,7 @@ const URLS = {
     LOGIN_DIR : "/users/login",
     ALL_EVENT_DIR_NO_FILTER : "/allactivities",
     ALL_EVENT_DIR : "/allactivitiesfeed",
+    EVENT_BY_ID_DIR : "/activitie",
     EVENT_DIR : "/activities",
     REGISTER_EVENT_DIR : "/assistances",
     IMAGE_URL : "/containers",
