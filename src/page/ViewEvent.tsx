@@ -86,12 +86,18 @@ export default class Login extends Component<ViewEventProps, ViewEventState> {
           <Container maxWidth="md">
           {this.state.event ? 
           <Card className="pr-4 pl-4 mt-2">
+
+              <Typography className="mt-2 pl-2 pr-4 float-right mr-4" variant="body1" color="textSecondary" component="p">
+                { this.state.event.timeI + " hasta " + this.state.event.timeF }
+              </Typography>
+
             <div className="date_flag">{formatDate(this.state.event.getDate())}</div>
+            
             <CardMedia
               style={{
                 height: 0,
                 paddingTop: '56.25%', // 16:9
-                marginTop: "-4rem",
+                marginTop: "-3rem",
                 
               }}
               image={this.state.event.urlImgActivity}
