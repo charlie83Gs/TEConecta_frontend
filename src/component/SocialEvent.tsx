@@ -10,6 +10,8 @@ type SocialEventProps= {
 }
 
 //this component provides importand metadata for social network
+//based on https://css-tricks.com/essential-meta-tags-social-media/
+//using helmet to inject tags on the header of the website
 const SocialEvent = 
 ({ event }: SocialEventProps) => {
         return(
