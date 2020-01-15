@@ -1,18 +1,23 @@
 import ROUTES from './routes';
 
 const URLS = {
+
     SERVER : "https://teconecta-noisy-rhinocerous-te.mybluemix.net",
     DOMAIN : "https://boiling-springs-28349.herokuapp.com/",
     PRERENDER : "https://service.prerender.io/", //this is a prerender service to enable facebook view publication metada
     //SERVER : "http://localhost:3000",
+
+    //SERVER : "https://teconecta-noisy-rhinocerous-te.mybluemix.net",
+    //SERVER : "http://localhost:3000",
+
     ACCOUNT_DIR : "/account",
     LOGIN_DIR : "/users/login",
     ALL_EVENT_DIR_NO_FILTER : "/allactivities",
     ALL_EVENT_DIR : "/allactivitiesfeed",
-    EVENT_BY_ID_DIR : "/activitie",
     EVENT_DIR : "/activities",
     REGISTER_EVENT_DIR : "/assistances",
     IMAGE_URL : "/containers",
+    USERROLE_DIR : "/user-roles"
     
 }
 
