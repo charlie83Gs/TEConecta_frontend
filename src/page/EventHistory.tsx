@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'; // let's also import Compone
 import {Col,Row,Container} from 'reactstrap';
 import Header from '../component/Header';
 import { Route } from "react-router-dom";
-import {getEvents} from '../services/event.service'
+import {getEvents, getEventsNoFilter} from '../services/event.service'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
@@ -30,7 +30,7 @@ export default class EventHistory extends Component<{}, EventHistoryState> {
     componentWillMount() {
       //var username : any = localStorage.getItem("username");
         this.setState({"events" : undefined})
-        getEvents(this.onEventsLoaded);
+        getEventsNoFilter(this.onEventsLoaded);//cambie esto para que el admSuperior vea todos 
     }
   
 

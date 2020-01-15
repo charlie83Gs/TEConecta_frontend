@@ -59,6 +59,22 @@ export function getEvents(callback : Function){
 	});
 }
 
+export function getEventsNoFilter(callback : Function){
+	//var session = getSession();
+    //console.log(session);
+    axios({
+		method: 'get',
+		url: URLS.SERVER + URLS.ALL_EVENT_DIR_NO_FILTER,
+		headers: HEADERS,
+	})
+	.then(function (response) {
+        callback(response.data);
+	}, (error) => {
+		console.log(error);
+		callback(undefined);
+	});
+}
+
 export function getEventsFiltered(callback : Function){
 	
     axios({
