@@ -35,12 +35,12 @@ export default ShareButton;
 
 const preRender= (event : Event, history : any) =>{
     //var newPageHandle : any = window.open(getEventUrl( event.id ));
-    history.push(ROUTES.VIEW_EVENT_NO_HANDLE + "/" + event.id );
-    setTimeout(function(){ afterRender(event,history) }, 5000);
+    history.replace(ROUTES.VIEW_EVENT_NO_HANDLE + "/" + event.id );
+    setTimeout(function(){ afterRender(event,history) }, 2000);
   }
 
 const afterRender = (event : Event , history : any) =>{
     window.open(getShareUrl( event.id ));
-    history.push(ROUTES.ADMIN_EVENT);
+    history.replace(ROUTES.ADMIN_EVENT);
 
 }
