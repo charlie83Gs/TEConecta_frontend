@@ -27,7 +27,7 @@ import {
 
 const App: React.FC = () => {
   
-  
+  document.title = "TEConecta";
   return (
     <Router>
         <Switch>

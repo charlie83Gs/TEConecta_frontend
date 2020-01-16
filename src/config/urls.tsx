@@ -2,10 +2,10 @@ import ROUTES from './routes';
 
 const URLS = {
 
-    //SERVER : "https://teconecta-noisy-rhinocerous-te.mybluemix.net",
+    SERVER : "https://teconecta-noisy-rhinocerous-te.mybluemix.net",
     DOMAIN : "https://boring-cattle-827.roast.io/",
     PRERENDER : "https://service.prerender.io/", //this is a prerender service to enable facebook view publication metada
-    SERVER : "http://localhost:3000",
+    //SERVER : "http://localhost:3000",
 
     //SERVER : "https://teconecta-noisy-rhinocerous-te.mybluemix.net",
     //SERVER : "http://localhost:3000",
@@ -39,8 +39,14 @@ export function CreateHeaders(token : string ) {
     return result;
 }
 
+
+export function getEventUrl(eventId : string){
+    return  window.location.href + ROUTES.VIEW_EVENT_NO_HANDLE +"/"+ eventId
+}
+
+
 export function getShareUrl(eventId : string){
-    return "https://www.facebook.com/sharer/sharer.php?u="+ window.location.href+"/" + ROUTES.VIEW_EVENT_NO_HANDLE +"/"+ eventId
+    return "https://www.facebook.com/sharer/sharer.php?u="+ getEventUrl(eventId);
 }
 
 export function getImageUploadPath(container: string){
