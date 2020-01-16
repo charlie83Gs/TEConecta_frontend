@@ -61,7 +61,7 @@ export function getUser(id : string ,callback : Function){
 		headers: HEADERS,
 	})
 	.then(function (response) {
-        callback(response);
+        callback(response.data);
 	}, (error) => {
 		//console.log(error);
 		callback(undefined);
@@ -102,5 +102,21 @@ export function addRoleToUser(userRole : UserRole, callback : Function){
 	}, (error) => {
 		console.log(error);
 		callback(undefined);
+	});
+}
+
+export function updateUserPassword(user : User, callback : Function){
+    var session = getSession();
+    axios({
+		method: 'patch',
+		url: URLS.SERVER + URLS.UPDATE_PASSWORD + "/" + user.id,
+		headers: CreateHeaders(session.token),
+		data : user.toJson()
+	})
+	.then(function (response) {
+        callback(true);
+	}, (error) => {
+		console.log(error);
+		callback(false);
 	});
 }
