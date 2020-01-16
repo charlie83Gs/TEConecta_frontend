@@ -45,7 +45,7 @@ const ViewUser =
               subheader={user.location}
             />
             <label>
-            <Avatar className="ml-3" src={user.urlImageProfile} style={{width:"10rem",height:"10rem"}}/>
+            <Avatar className="ml-3" src={user.urlImgProfile} style={{width:"10rem",height:"10rem"}}/>
             </label>
             <label className="ml-4" style={{top:"-3rem" ,position:"relative"}}>
             <Typography  className="d-inline" variant="body2" color="textSecondary" component="p">

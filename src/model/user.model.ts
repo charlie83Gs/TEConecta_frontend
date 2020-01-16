@@ -7,7 +7,7 @@ export default class User{
     description: string;
     email: string;
     password: string;
-    urlImageProfile: string;
+    urlImgProfile: string;
     manager: string;
     
     constructor(id : string,
@@ -18,7 +18,7 @@ export default class User{
                 description: string,
                 email: string,
                 password: string,
-                urlImageProfile: string,
+                urlImgProfile: string,
                 manager: string,
                 ) {
 
@@ -30,12 +30,13 @@ export default class User{
         this.description = description;
         this.email = email;
         this.password = password;
-        this.urlImageProfile = urlImageProfile;
+        this.urlImgProfile = urlImgProfile;
         this.manager = manager;
     }
 
     
     static loadFromJson(data :any) : User{
+        console.log(data);
         return new User(
             data.id,
             data.name,
@@ -45,7 +46,7 @@ export default class User{
             data.description,
             "",
             data.password,
-            data.urlImageProfile,
+            data.urlImgProfile,
             data.manager           
         )
 
@@ -60,7 +61,7 @@ export default class User{
             "place" : this.place,
             "description" : this.description,
             "password" : this.password,
-            "urlImgProfile" : this.urlImageProfile,
+            "urlImgProfile" : this.urlImgProfile,
             "manager" : this.manager
         }
     }
@@ -74,7 +75,7 @@ export default class User{
             "place" : this.place,
             "description" : this.description,
             "password" : this.password,
-            "urlImgProfile" : this.urlImageProfile,
+            "urlImgProfile" : this.urlImgProfile,
             "manager" : this.manager
         }
     }
