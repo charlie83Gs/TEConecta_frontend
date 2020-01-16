@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'; // let's also import Compone
 import {Col,Row,Container} from 'reactstrap';
 import Header from '../component/Header';
 import { Route, Redirect } from "react-router-dom";
-import { FormLabel,MenuItem,Select,FormGroup } from '@material-ui/core';
+import { FormLabel,MenuItem,Select,FormGroup, Typography } from '@material-ui/core';
 import { FormControlLabel,Button,TextField, FormControl} from '@material-ui/core';
 import User from '../model/user.model';
 import {uploadImage} from '../services/image.service';
@@ -347,6 +347,9 @@ export default class AddUser extends Component<{}, AddUserState> {
                 style={{ display: "none" }}
                 onChange={myself.handleImageChange("imageFile")}
               />
+              <Typography className="mt-0 pl-2 pr-2" variant="body2" color="textSecondary" component="p">
+                { this.state.imageFile && this.state.imageFile.name }
+              </Typography>
             </Button>
             </Row>
             <Row className="justify-content-md-center pb-5 pt-3 mr-0 ml-0"> 
