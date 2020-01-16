@@ -117,6 +117,14 @@ export default class AddUser extends Component<{}, AddUserState> {
     this.setState(update)
   }
 
+  handleImageChange = (name : string) => ({target : {files }} : {target : { files:any }}) => {
+    let newValue : any = files[0];
+    let update : any = {};
+    update[name] = newValue;
+    console.log(newValue)
+    //this.handleImageUpload(files[0],"activityX")
+    this.setState(update)
+  }
 
   handleSubmit = () => {
     //TODO validation
@@ -160,7 +168,7 @@ export default class AddUser extends Component<{}, AddUserState> {
     console.log(this.state.image)
     var imageUrl = this.state.image;
     if(this.state.imageFile){
-        var activity_name = "Usuario" + this.state.name.replace(/\s+/g, '');
+        var activity_name = "Usuario" + this.state.UserId.replace(/\s+/g, '');
         var imageUrl = getImageDownloadPath(activity_name,this.state.imageFile);
         console.log(imageUrl);
         console.log(this.state.imageFile);
@@ -201,14 +209,7 @@ export default class AddUser extends Component<{}, AddUserState> {
     if(result) this.setState({created:true})
   }
 
-  handleImageChange = (name : string) => ({target : {files }} : {target : { files:any }}) => {
-    let newValue : any = files[0];
-    let update : any = {};
-    update[name] = newValue;
-    //console.log(newValue)
-    //this.handleImageUpload(files[0],"activityX")
-    this.setState(update)
-  }
+
 
 
   render() {
@@ -344,7 +345,7 @@ export default class AddUser extends Component<{}, AddUserState> {
               <input
                 type="file"
                 style={{ display: "none" }}
-                onChange={()=>{myself.handleImageChange("imageFile");myself.handleFieldChange("image")}}
+                onChange={myself.handleImageChange("imageFile")}
               />
             </Button>
             </Row>

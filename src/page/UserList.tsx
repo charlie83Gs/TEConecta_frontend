@@ -58,6 +58,7 @@ export default class UserList extends Component<{}, UserListState> {
   }
 
   setUser = (user: any) => { 
+    //console.log(user)
     sessionStorage.setItem("user", JSON.stringify(user));
   }
 

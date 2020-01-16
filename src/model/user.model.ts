@@ -45,7 +45,7 @@ export default class User{
             data.description,
             "",
             data.password,
-            data.urlImgProfile,
+            data.urlImageProfile,
             data.manager           
         )
 

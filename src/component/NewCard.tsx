@@ -63,7 +63,8 @@ const NewCard =
             />
               <CardHeader
                 title={event.name}
-                className="mb-0"
+                className="mb-0 mt-1"
+                style={{height:"4rem"}}
               />
             <CardContent className="card_body mt-0 p-0">
               <Typography className="mt-0 pl-2 pr-2" variant="body2" color="textSecondary" component="p">

@@ -148,6 +148,7 @@ export default class ChangePassword extends Component<{}, ChangePasswordState> {
         {!this.state.session && <Redirect to={ROUTES.NEWS_FEED}/>}
         {this.state.changed && <Redirect to={ROUTES.MENU}/>}
         
+        
         </div>
     )
 }

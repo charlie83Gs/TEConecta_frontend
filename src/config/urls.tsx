@@ -54,7 +54,7 @@ export function getImageUploadPath(container: string){
 }
 
 export function getImageDownloadPath(container: string, image : any){
-    return URLS.SERVER+URLS.IMAGE_URL+container+"/download/" + image.name;
+    return URLS.SERVER+URLS.IMAGE_URL+"/"+container+"/download/" + image.name;
 }
 
 export default URLS;

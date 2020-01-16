@@ -116,7 +116,7 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
                   <Col md="2" >
                   <ListItem  alignItems="flex-start">
                      <ListItemText 
-                           primary={ event.date}/>
+                           primary={new Date(event.date).toLocaleDateString()}/>
 
                   </ListItem >
                   </Col>

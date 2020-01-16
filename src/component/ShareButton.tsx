@@ -14,6 +14,7 @@ type ShareButtonProps = {
 
 }
 
+const delay = 4000;
 const ShareButton = 
 ({ event }: ShareButtonProps) => {
 
@@ -36,7 +37,7 @@ export default ShareButton;
 const preRender= (event : Event, history : any) =>{
     //var newPageHandle : any = window.open(getEventUrl( event.id ));
     history.replace(ROUTES.VIEW_EVENT_NO_HANDLE + "/" + event.id );
-    setTimeout(function(){ afterRender(event,history) }, 2000);
+    setTimeout(function(){ afterRender(event,history) }, delay);
   }
 
 const afterRender = (event : Event , history : any) =>{
