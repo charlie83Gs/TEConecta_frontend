@@ -17,6 +17,8 @@ Carlos Gomez Soza Email: cargomez@ic-itcr.ac.cr\n \
 Wilson López Rubi Email: willopez@ic-itcr.ac.cr\n \
 Juan José Solano Email: juasolano@ic-itcr.ac.cr\n'
 
+const  terminos = 'Terminos y Condiciones'
+
 const Footer = () => {
       return(
       <footer className="page-footer"  style={{textAlign:"center", "bottom":"1rem", width: "100%", height: "50px"}}>
@@ -24,7 +26,7 @@ const Footer = () => {
         <div className="row">
           <div className="col l6 s12">
           <InfoCard
-          Contenido = "prueba"
+          Contenido = {terminos}
           titulo = "Términos y Condiciones "
           />
           </div>
