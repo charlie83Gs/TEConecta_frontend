@@ -7,9 +7,10 @@ import { FormControlLabel,Button,TextField, FormControl} from '@material-ui/core
 import User from '../model/user.model';
 import {uploadImage} from '../services/image.service';
 import {getImageDownloadPath} from '../config/urls'
-import {addUser, updateUser} from '../services/user.services';
+import {addUser, updateUser, addRoleToUser} from '../services/user.services';
 import ROUTES from '../config/routes';
 import {LOCATION_LIST} from '../config/locations';
+import UserRole from '../model/user-role.model';
 
 const adminOptions = [
     { label: 'Grupo de interes' },
@@ -39,10 +40,12 @@ const adminOptions = [
     imageError: boolean,
     created : boolean;
     editMode : boolean;
+    UserId : string;
   }
   
 
 export default class AddUser extends Component<{}, AddUserState> {
+  UserId: string = "";
 
 
     constructor(props : any) { // does not compile in strict mode
@@ -56,6 +59,7 @@ export default class AddUser extends Component<{}, AddUserState> {
   componentWillMount() {
     //var username : any = localStorage.getItem("username");
     var user : any = sessionStorage.getItem("user");
+    var UserId : string = "test";
     let name : string = "";
     let description : string = "";
     let place : string = "";
@@ -77,6 +81,7 @@ export default class AddUser extends Component<{}, AddUserState> {
         email = user.id;
         phone = user.phone;
         manager = user.manager;
+        UserId = user.id;
     }
 
     this.setState(
@@ -89,6 +94,7 @@ export default class AddUser extends Component<{}, AddUserState> {
             "phone" : phone,
             "manager" : manager,
             "image" : image,
+            "UserId" : UserId,
             "nameError" : false,
             "descriptionError" : false,
             "userTypeError" : false,
@@ -100,6 +106,7 @@ export default class AddUser extends Component<{}, AddUserState> {
             "imageError" : false,
             "created" : false,
             "editMode" : editMode,
+            
         })    
   }
 
@@ -153,7 +160,7 @@ export default class AddUser extends Component<{}, AddUserState> {
     console.log(this.state.image)
     var imageUrl = this.state.image;
     if(this.state.imageFile){
-        var activity_name = "Activity" + this.state.name.replace(/\s+/g, '');
+        var activity_name = "Usuario" + this.state.name.replace(/\s+/g, '');
         var imageUrl = getImageDownloadPath(activity_name,this.state.imageFile);
         console.log(imageUrl);
         console.log(this.state.imageFile);
@@ -178,13 +185,19 @@ export default class AddUser extends Component<{}, AddUserState> {
         user.id = userSt.id;
         updateUser(user,this.onUserAdded);
         sessionStorage.removeItem("user");
-    }else
-    addUser(user,this.onUserAdded);
-
-
+    }else{
+      addUser(user,  this.onUserAdded);
+    }
+  }
+  onUserAdded = (result : any) => {
+    var id: string = "";
+    id = User.loadFromJson(result).id;
+    console.log(id);
+    var userrole : UserRole =  new UserRole("0",id,'ADMINREG');
+    addRoleToUser(userrole,this.onRoleAdded);
   }
 
-  onUserAdded = (result : boolean) =>{
+  onRoleAdded = (result :   boolean) =>{
     if(result) this.setState({created:true})
   }
 

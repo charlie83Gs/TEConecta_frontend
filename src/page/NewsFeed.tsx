@@ -13,6 +13,7 @@ import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 
 import Footer from '../component/Footer';
+import Helmet from 'react-helmet';
 
 // the clock's state has one field: The current time, based upon the
 // JavaScript class Date
@@ -122,6 +123,10 @@ export default class NewsFeed extends Component<{}, NewsFeedState> {
     return (
       <div className="gray" style={{"minHeight":"100vh"}}>
       <Header title= "" navigate={false}/>
+      <Helmet>
+        <meta property="og:title" content="TEConecta eventos"/>
+        <meta property="og:description" content="Este sitio contiene los eventos que se realizaran en el Instituto Tecnologico De Costa Rica"/>
+      </Helmet>
       <div className="blue_container container_100w pt-4 m-0">
       <label className="mr-3 ml-2">
         <label className="w6rem">Sede</label>

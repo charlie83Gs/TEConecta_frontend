@@ -16,6 +16,7 @@ import {getSession} from '../services/session.service';
 import Event from '../model/event.model';
 import {eventSort} from '../component/eventSort';
 import FacebookIcon from '@material-ui/icons/Facebook';
+import ShareButton from '../component/ShareButton';
 
 type AdminEventState = {
   events: any,
@@ -137,20 +138,11 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
                   onClick={()=>{myself.setEvent(event) ;history.push(ROUTES.VIEW_PARTICIPANTS);}}>
                     Participantes
                   </Button>
-                  <a target="_blank" 
-                          href={"https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fboiling-springs-28349.herokuapp.com/ViewEvent/" + event.id} 
-                          className="fb-xfbml-parse-ignore">
-                    <Button className="ml-2" variant="contained" color="primary" 
-                    >
-                      <FacebookIcon className="mr-1"></FacebookIcon>
-                      Compartir
-                    </Button>
-                  </a>
-
+                  <ShareButton event ={event}></ShareButton>
+       
                   <AlertDialog onAccept={() => {this.handleCancel(event); history.push(ROUTES.ADMIN_EVENT);}}  onReject={() => {}} text ={"cancelar"} 
                   titleText = {"¿Desea cancelar la actividad seleccionada?"}
                   infoText = {"Una vez cancela no se puede activar nuevamente."}/>
-
                   </Col>
                   )} />
                   </Row>
