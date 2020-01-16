@@ -4,7 +4,7 @@ const URLS = {
 
     SERVER : "https://teconecta-noisy-rhinocerous-te.mybluemix.net",
     DOMAIN : "https://boring-cattle-827.roast.io/",
-    PRERENDER : "https://service.prerender.io/", //this is a prerender service to enable facebook view publication metada
+    //PRERENDER : "https://service.prerender.io/", //this is a prerender service to enable facebook view publication metada
     //SERVER : "http://localhost:3000",
 
     //SERVER : "https://teconecta-noisy-rhinocerous-te.mybluemix.net",

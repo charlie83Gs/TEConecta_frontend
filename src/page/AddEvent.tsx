@@ -19,6 +19,7 @@ import {getImageDownloadPath} from '../config/urls'
 import {getSession} from '../services/session.service';
 import {LOCATION_LIST} from '../config/locations';
 import {EVENT_TYPE_LIST} from '../config/eventTypes';
+import Typography from '@material-ui/core/Typography';
 
 
 type AddEventState = {
@@ -411,6 +412,9 @@ export default class AddEvent extends Component<{}, AddEventState> {
                 style={{ display: "none" }}
                 onChange={myself.handleImageChange("imageFile")}
               />
+              <Typography className="mt-0 pl-2 pr-2" variant="body2" color="textSecondary" component="p">
+                { this.state.imageFile && this.state.imageFile.name }
+              </Typography>
             </Button>
             </Row>
             <Row className="m-0">

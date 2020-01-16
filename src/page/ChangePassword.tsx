@@ -93,6 +93,7 @@ export default class ChangePassword extends Component<{}, ChangePasswordState> {
         }
         this.setState({"error" : false});
         getUser(this.state.session.id, this.onUserRetrieved );
+        //getUser("ASODEC", this.onUserRetrieved );
         //history.push("/menu")
     } 
 
