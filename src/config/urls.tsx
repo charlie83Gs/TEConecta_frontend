@@ -9,7 +9,7 @@ const URLS = {
 
     //SERVER : "https://teconecta-noisy-rhinocerous-te.mybluemix.net",
     //SERVER : "http://localhost:3000",
-
+    EVENT_BY_ID_DIR : '/activitie',
     ACCOUNT_DIR : "/account",
     LOGIN_DIR : "/users/login",
     ALL_EVENT_DIR_NO_FILTER : "/allactivities",
