@@ -52,7 +52,8 @@ type AddEventState = {
   editMode: boolean,
   created: boolean,
   open: boolean,
-  setOpen: boolean
+  setOpen: boolean,
+  correct: boolean
 }
 
 function formatDateToTime(date : Date) {
@@ -132,7 +133,8 @@ export default class AddEvent extends Component<{}, AddEventState> {
           "editMode" : editMode,
           "created" : false,
           "open": false,
-          "setOpen": false
+          "setOpen": false,
+          "correct": false
       })    
         
   }
@@ -235,6 +237,7 @@ export default class AddEvent extends Component<{}, AddEventState> {
 
   onEventAdded = (res : boolean) => {
     console.log(res);
+    //if(res) this.setState({correct : true});
     //this.setState({"created" : res})
     this.handleClickOpen();
   }
@@ -276,7 +279,8 @@ export default class AddEvent extends Component<{}, AddEventState> {
   };
 
   handleClickOpen = () => {
-    this.setState({open:true});
+    //if(this.state.correct)
+      this.setState({open:true});
   };
 
   handleClose = () => {
@@ -469,7 +473,7 @@ export default class AddEvent extends Component<{}, AddEventState> {
 
             <button 
                         className="mr-4 green teconecta_button mid_lenght"
-                        onClick={() => {this.handleSubmit(); this.handleClickOpen()}}>
+                        onClick={() => {this.handleSubmit();}}>
                         {myself.state.editMode ? "Editar" : "Crear"}
                 </button>
                 <Dialog
