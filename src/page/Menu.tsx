@@ -60,7 +60,6 @@ export default class Menu extends Component<{}, {}> {
   //justify-content-md-center
   render() {
     var session = getSession();
-    console.log(session)
     return(
         <div className="gray" style={{"minHeight":"100vh"}}>
             <Header title=" - Centro de administración" navigate={true}></Header> 
@@ -72,7 +71,7 @@ export default class Menu extends Component<{}, {}> {
                         <MenuItem icon={list} title = "Administrar Eventos" onClick={()=>{history.push(ROUTES.ADMIN_EVENT)}}/>
                         <MenuItem icon={addEvent} title = "Agregar Evento" onClick={()=>{history.push(ROUTES.ADD_EVENT); sessionStorage.removeItem("event")}}/>
                         <MenuItem icon={change} title = "Cambiar Contraseña" onClick={()=>{history.push(ROUTES.CHANGE_PASSWORD)}}/>
-                        <MenuItem icon={exit} title = "Logout" onClick={()=>{history.push(ROUTES.NEWS_FEED); sessionStorage.removeItem("event");sessionStorage.removeItem("session")}}/>
+                        <MenuItem icon={exit} title = "Cerrar Sesión" onClick={()=>{history.push(ROUTES.NEWS_FEED); sessionStorage.removeItem("event");sessionStorage.removeItem("session")}}/>
                     </Fragment>
                 }
                 {isAdmin(session.roles) && 
@@ -81,7 +80,7 @@ export default class Menu extends Component<{}, {}> {
                         <MenuItem icon={user} title = "Administrar Usuarios" onClick={()=>{history.push(ROUTES.ADMIN_USER)}}/>
                         <MenuItem icon={addUser} title = "Agregar Usuario" onClick={()=>{history.push(ROUTES.ADD_USER)}}/>
                         <MenuItem icon={change} title = "Cambiar Contraseña" onClick={()=>{history.push(ROUTES.CHANGE_PASSWORD)}}/>
-                        <MenuItem icon={exit} title = "Logout" onClick={()=>{history.push(ROUTES.NEWS_FEED); sessionStorage.removeItem("event");sessionStorage.removeItem("session")}}/>
+                        <MenuItem icon={exit} title = "Cerrar Sesión" onClick={()=>{history.push(ROUTES.NEWS_FEED); sessionStorage.removeItem("event");sessionStorage.removeItem("session")}}/>
                     </Fragment>
                 }
                 </Fragment>

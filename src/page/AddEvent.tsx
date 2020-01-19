@@ -201,7 +201,7 @@ export default class AddEvent extends Component<{}, AddEventState> {
     var imageUrl = this.state.image;
     if(this.state.imageFile){
       var activity_name = "Activity" + this.state.name.replace(/\s+/g, '');
-      var imageUrl = getImageDownloadPath(activity_name,this.state.imageFile);
+      imageUrl = getImageDownloadPath(activity_name,this.state.imageFile);
       console.log(imageUrl);
       console.log(this.state.imageFile);
       uploadImage(activity_name, this.state.imageFile,()=>{console.log("upload executed multipart")});
@@ -236,10 +236,7 @@ export default class AddEvent extends Component<{}, AddEventState> {
   }
 
   onEventAdded = (res : boolean) => {
-    console.log(res);
-    //if(res) this.setState({correct : true});
-    //this.setState({"created" : res})
-    this.handleClickOpen();
+    if(res) this.handleClickOpen();
   }
 
   handleFieldChange = (name : string) => ({target : {value }} : {target : { value:any }}) => {
@@ -279,19 +276,12 @@ export default class AddEvent extends Component<{}, AddEventState> {
   };
 
   handleClickOpen = () => {
-    //if(this.state.correct)
       this.setState({open:true});
   };
 
   handleClose = () => {
     this.setState({open:false});
   };
-  //upload image
-  /*handleImageUpload = (image : any, activity_name : string) => { 
-    activity_name = activity_name.replace(/\s+/g, '');
-    uploadImage("Activity" + activity_name,image,()=>{console.log("upload executed multipart")});
-    //uploadImage("uploadImageJson",image,()=>{console.log("upload executed json")});
-  }*/
 
   handleBooleanChange =  (name : string) => (event : any) => {
     this.setState({ ...this.state, [name]: event.target.checked });
@@ -482,14 +472,15 @@ export default class AddEvent extends Component<{}, AddEventState> {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
               >
-                <DialogTitle id="alert-dialog-title">{"Creación"}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{myself.state.editMode ? "Edición" : "Creación"}</DialogTitle>
                 <DialogContent>
                   <DialogContentText id="alert-dialog-description">
-                    {"Se creo la actividad correctamente."}
+                  {myself.state.editMode ? "Se modificaron los datos de la actividad correctamente." : "Se creo la actividad correctamente."}
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                  <button onClick={() => {this.handleClose(); this.handleClickAcepted()}} color="primary" autoFocus>
+                  <button className="mr-4 green teconecta_button mid_lenght"
+                   onClick={() => {this.handleClose(); this.handleClickAcepted()}} color="primary" autoFocus>
                     Aceptar
                   </button>
                 </DialogActions>
@@ -516,21 +507,3 @@ export default class AddEvent extends Component<{}, AddEventState> {
     )
 }
 }
-
-/*
-<button 
-                        className="mr-4 green teconecta_button mid_lenght"
-                        onClick={this.handleSubmit}>
-                        {myself.state.editMode ? "Editar" : "Crear"}
-                </button>
-*/
-
-/* 
-          <button 
-                        className="mr-4 blue teconecta_button mid_lenght" 
-                        data-href="https://facebook.com" //Aqui va el link de la pagina de facebook a compartir 
-                        data-layout="button" data-size="large">
-                          <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fboiling-springs-28349.herokuapp.com%2F&amp;src=sdkpreparse" 
-                          className="fb-xfbml-parse-ignore">Compartir</a>
-                </button>
-*/

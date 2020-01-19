@@ -81,9 +81,12 @@ export default class AdminUsers extends Component<{}, AdminUsersState> {
   }
 
   deleteUser = (user: any) => { 
-    deleteUser(user.id, ()=>{});
+    deleteUser(user.id, this.ondelete);
   }
 
+  ondelete = (result : boolean) => {
+    if(result) window.location.reload();
+  }
 
   render() {
     let myself = this;
@@ -124,11 +127,11 @@ export default class AdminUsers extends Component<{}, AdminUsersState> {
                   
                   <Button variant="contained" color="primary" 
                     onClick={()=>{myself.setUser(user);history.push(ROUTES.ADD_USER);}}>
-                    Edit
+                    Editar
                   </Button>
                   <Button className="ml-5" variant="contained" color="secondary" 
-                    onClick={()=>{myself.deleteUser(user);window.location.reload();;}}>
-                    Delete
+                    onClick={()=>{myself.deleteUser(user);}}>
+                    Eliminar
                   </Button>
                   </Col>
                   )} />

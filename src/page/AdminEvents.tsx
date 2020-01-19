@@ -93,10 +93,10 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
               <h5>Nombre</h5>
             </Col>
             <Col md="2">
-              <h5>fecha</h5>
+              <h5>Fecha</h5>
             </Col>
             <Col md="1">
-              <h5>cupo</h5>
+              <h5>Cupo</h5>
             </Col>
             </Row>
             {this.state.events ?
@@ -140,7 +140,7 @@ export default class AdminEvent extends Component<{}, AdminEventState> {
                   </Button>
                   <ShareButton event ={event}></ShareButton>
        
-                  <AlertDialog onAccept={() => {this.handleCancel(event); history.push(ROUTES.ADMIN_EVENT);}}  onReject={() => {}} text ={"cancelar"} 
+                  <AlertDialog onAccept={() => {this.handleCancel(event); history.push(ROUTES.MENU);}}  onReject={() => {}} text ={"cancelar"} 
                   titleText = {"¿Desea cancelar la actividad seleccionada?"}
                   infoText = {"Una vez cancela no se puede activar nuevamente."}/>
                   </Col>

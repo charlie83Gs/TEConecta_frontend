@@ -79,10 +79,10 @@ export function deleteUser(id : string ,callback : Function){
 		headers: HEADERS,
 	})
 	.then(function (response) {
-        callback(response);
+        callback(true);
 	}, (error) => {
 		//console.log(error);
-		callback(undefined);
+		callback(false);
 	});
 }
 

@@ -132,7 +132,7 @@ export default class UserList extends Component<{}, UserListState> {
                   
                   <Button variant="contained" color="primary" 
                     onClick={()=>{myself.setUser(user);history.push(ROUTES.VIEW_USER);}}>
-                    View
+                    Detalles
                   </Button>
   
                   </Col>

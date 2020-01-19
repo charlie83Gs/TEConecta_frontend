@@ -10,6 +10,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import {Button} from '@material-ui/core';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ROUTES from '../config/routes';
+import Event from '../model/event.model';
 
 
 type EventHistoryState = {
@@ -36,9 +37,16 @@ export default class EventHistory extends Component<{}, EventHistoryState> {
 
 
   onEventsLoaded = (response : any) =>{
-    console.log("loaded")
-    console.log(response )
-    this.setState({"events" : response}); 
+    /*console.log("loaded")
+    console.log(response )*/
+    var newEvents : Event[] = [];
+    response.forEach(
+      (event : any) =>{
+        newEvents.push(Event.loadFromJson(event));
+      }
+    )
+    newEvents = Event.sortByDate(newEvents)
+    this.setState({"events" : newEvents}); 
   }
 
   render() {
@@ -70,7 +78,7 @@ export default class EventHistory extends Component<{}, EventHistoryState> {
             {this.state.events ?
               <List>
               {this.state.events.map(
-                (event : any,index : number) =>{
+                (event : Event,index : number) =>{
                 return (
                   <Row className="ml-0 mr-0 mb-2 p-2" style={{"backgroundColor":"#FFF"}} key = {index}>
                   <Col md="2" >
@@ -111,7 +119,7 @@ export default class EventHistory extends Component<{}, EventHistoryState> {
                   <Col md="2" >
                   <ListItem  key = {index} alignItems="flex-start">
                      <ListItemText 
-                           primary={event.fk_user}/>
+                           primary={event.owner}/>
 
                   </ListItem >
                   </Col>
