@@ -9,7 +9,6 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import { green } from '@material-ui/core/colors';
 import ROUTES from '../config/routes';
 import DateFnsUtils from '@date-io/date-fns';
 import Event from '../model/event.model';
@@ -20,6 +19,13 @@ import {getSession} from '../services/session.service';
 import {LOCATION_LIST} from '../config/locations';
 import {EVENT_TYPE_LIST} from '../config/eventTypes';
 import Typography from '@material-ui/core/Typography';
+import CreationResultDialog from '../component/CreationResultDialog';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { isThisSecond } from 'date-fns/esm';
 
 
 type AddEventState = {
@@ -44,7 +50,9 @@ type AddEventState = {
   descriptionError: boolean,
   typeError: boolean,
   editMode: boolean,
-  created: boolean
+  created: boolean,
+  open: boolean,
+  setOpen: boolean
 }
 
 function formatDateToTime(date : Date) {
@@ -57,18 +65,18 @@ function formatDateToTime(date : Date) {
 }
 
 export default class AddEvent extends Component<{}, AddEventState> {
-
-
     constructor(props : any) { // does not compile in strict mode
         super(props)
         //load last used username
         
     }
+    
+
 
 
   // Before the component mounts, we initialise our state
   componentWillMount() {
-
+    
     //load event if selected
     var event : any = sessionStorage.getItem("event");
     var name = "";
@@ -123,6 +131,8 @@ export default class AddEvent extends Component<{}, AddEventState> {
           "descriptionError" : false,
           "editMode" : editMode,
           "created" : false,
+          "open": false,
+          "setOpen": false
       })    
         
   }
@@ -220,12 +230,13 @@ export default class AddEvent extends Component<{}, AddEventState> {
       updateEvent(event,this.onEventAdded);
     }else
       addEvent(event,this.onEventAdded);
-    console.log(event)
+      console.log(event)
   }
 
   onEventAdded = (res : boolean) => {
     console.log(res);
-    this.setState({"created" : res})
+    //this.setState({"created" : res})
+    this.handleClickOpen();
   }
 
   handleFieldChange = (name : string) => ({target : {value }} : {target : { value:any }}) => {
@@ -257,10 +268,20 @@ export default class AddEvent extends Component<{}, AddEventState> {
     let newValue : any = files[0];
     let update : any = {};
     update[name] = newValue;
-    //console.log(newValue)
-    //this.handleImageUpload(files[0],"activityX")
     this.setState(update)
   }
+
+  handleClickAcepted = () => {
+    this.setState({created : true});
+  };
+
+  handleClickOpen = () => {
+    this.setState({open:true});
+  };
+
+  handleClose = () => {
+    this.setState({open:false});
+  };
   //upload image
   /*handleImageUpload = (image : any, activity_name : string) => { 
     activity_name = activity_name.replace(/\s+/g, '');
@@ -446,12 +467,29 @@ export default class AddEvent extends Component<{}, AddEventState> {
             </Row>
             <Row className="justify-content-md-center pb-5 pt-3 m-0"> 
 
-                <button 
+            <button 
                         className="mr-4 green teconecta_button mid_lenght"
-                        onClick={this.handleSubmit}>
+                        onClick={() => {this.handleSubmit(); this.handleClickOpen()}}>
                         {myself.state.editMode ? "Editar" : "Crear"}
                 </button>
-      
+                <Dialog
+                open={this.state.open}
+                onClose={this.handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">{"Creación"}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    {"Se creo la actividad correctamente."}
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <button onClick={() => {this.handleClose(); this.handleClickAcepted()}} color="primary" autoFocus>
+                    Aceptar
+                  </button>
+                </DialogActions>
+              </Dialog>
                 <Route render={({ history}) => (
                 <button 
                         className="ml-4 red teconecta_button mid_lenght"
@@ -474,6 +512,14 @@ export default class AddEvent extends Component<{}, AddEventState> {
     )
 }
 }
+
+/*
+<button 
+                        className="mr-4 green teconecta_button mid_lenght"
+                        onClick={this.handleSubmit}>
+                        {myself.state.editMode ? "Editar" : "Crear"}
+                </button>
+*/
 
 /* 
           <button 
