@@ -145,6 +145,7 @@ export default class AddUser extends Component<{}, AddUserState> {
     stateUpdate["locationError"] = false;
     stateUpdate["emailError"] = false;
     stateUpdate["managerError"] = false;
+    stateUpdate["placeError"] = false;
 
     //mark error on unfilled fields
     if(this.state.name.length < 1){
@@ -171,6 +172,10 @@ export default class AddUser extends Component<{}, AddUserState> {
         err = true;
         stateUpdate["locationError"] = true;
     }
+    if(this.state.place.length < 1){
+      err = true;
+      stateUpdate["placeError"] = true;
+  }
 
     this.setState(stateUpdate);
     if(err) return;
@@ -298,6 +303,20 @@ export default class AddUser extends Component<{}, AddUserState> {
                       )
                     }
                 </Select>
+                </Col>
+            </Row>
+            <Row className=" ml-0 mr-0"> 
+                <Col className="ml-5 mr-5 mb-2" md="4">
+                    <label>Ubicación*</label>
+                    <TextField
+                    id="standard-helperText"
+                    className ="login_input"
+                    value={this.state.place}
+                    onChange = {myself.handleFieldChange("place")}
+                    error = {myself.state.placeError}
+                    label={myself.state.placeError ? "Por favor inserta una ubicación del grupo" : ""}
+                    type="email"
+                    />
                 </Col>
             </Row>
             <Row className=" ml-0 mr-0"> 
