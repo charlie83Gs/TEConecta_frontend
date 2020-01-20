@@ -405,7 +405,7 @@ export default class AddUser extends Component<{}, AddUserState> {
                 <DialogTitle id="alert-dialog-title">{myself.state.editMode ? "Edición" : "Creación"}</DialogTitle>
                 <DialogContent>
                   <DialogContentText id="alert-dialog-description">
-                  {myself.state.editMode ? "Se modificaron los datos de la actividad correctamente." : "Se creo la actividad correctamente."}
+                  {myself.state.editMode ? "Se modificaron los datos del usuario correctamente." : "Se creo un nuevo usuario correctamente, la contraseña por defecto es: 1234, recomendarle al nuevo usuario cambiarla una vez se ingrese al sistema."}
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>

@@ -59,6 +59,10 @@ const ViewUser =
             <Typography  className="d-inline" variant="body2" color="textSecondary" component="p">
                 <b>Encargado:</b>{  "  " + user.manager}
             </Typography>
+            <br/>
+            <Typography  className="d-inline" variant="body2" color="textSecondary" component="p">
+                <b>Ubicación:</b>{  "  " + user.place}
+            </Typography>
             </label>
             <CardContent>
               <Typography variant="body2" color="textSecondary" component="p">
