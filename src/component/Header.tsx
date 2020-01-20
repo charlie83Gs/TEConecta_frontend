@@ -54,7 +54,7 @@ const Header =
                   history.push(target)
                 }}
                 >
-                  {session ? "Menu Principal" : "Iniciar Sesion"}
+                  {session ? "Menú Principal" : "Iniciar Sesión"}
                   <AccountCircleIcon className="ml-4" />
               </button>
               <button 
@@ -62,7 +62,7 @@ const Header =
                 className="mr-4 ml-4 blue teconecta_button mid_lenght"
                 onClick={()=>{history.push(ROUTES.LIST_USER)}}
                 >
-                  Grupos De Interes
+                  Grupos De Interés
                   <AccountBoxIcon  className="ml-2" />
               </button>
             </Fragment>
