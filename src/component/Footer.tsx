@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="row">
           <div className="col l6 s12">
           <InfoCard
-          Contenido = "prueba"
+          Contenido = "No disponible."
           titulo = "Términos y Condiciones "
           />
           </div>

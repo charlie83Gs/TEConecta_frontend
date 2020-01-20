@@ -152,7 +152,7 @@ export default class AddUser extends Component<{}, AddUserState> {
         err = true;
         stateUpdate["nameError"] = true;
     }
-    if(this.state.phone.length < 1){
+    if(this.state.phone.length < 1 || this.state.phone.length >8 ){
         err = true;
         stateUpdate["phoneError"] = true;
     }
