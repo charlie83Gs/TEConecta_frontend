@@ -1,23 +1,10 @@
 import React,{Fragment} from 'react'; // we need this to make JSX compile
-import Card from '@material-ui/core/Card';
-import Grid from '@material-ui/core/Grid';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import {TextField} from '@material-ui/core';
-import {registerInEvent} from '../services/event.service';
-
-import Event from '../model/event.model'
-
 type CardProps = {
   Contenido : String,
   titulo: string
@@ -26,7 +13,6 @@ type CardProps = {
 const InfoCard = 
 ({ Contenido, titulo}: CardProps) => {
         const [open, setOpen] = React.useState(false);
-        const [assitanceOpen, setAssistanceOpen] = React.useState(false);
        
         const handleClickOpen = () => {
           setOpen(true);
@@ -50,8 +36,8 @@ const InfoCard =
             >
               <DialogTitle id="alert-dialog-title">{titulo}</DialogTitle>
               <DialogContent>
-                <Typography className="mt-0 pl-2 pr-2" variant="body2" color="textSecondary"  
-                style={{ display: "flex", justifyContent: "space-between"}}>
+              <Typography className="mt-0 pl-2 pr-2" variant="body2" color="textSecondary"  
+                style={{whiteSpace:"pre-line", textAlign :"center"}}>
                 {Contenido}
                 </Typography>
               </DialogContent>
@@ -67,4 +53,3 @@ const InfoCard =
 
     
 export default InfoCard;
-

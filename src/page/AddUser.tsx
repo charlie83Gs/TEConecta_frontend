@@ -1,9 +1,9 @@
-import React, { Component, Fragment } from 'react'; // let's also import Component
-import {Col,Row,Container} from 'reactstrap';
+import React, { Component } from 'react'; // let's also import Component
+import {Col,Row} from 'reactstrap';
 import Header from '../component/Header';
 import { Route, Redirect } from "react-router-dom";
-import { FormLabel,MenuItem,Select,FormGroup } from '@material-ui/core';
-import { FormControlLabel,Button,TextField, FormControl} from '@material-ui/core';
+import { MenuItem,Select, Typography } from '@material-ui/core';
+import { Button,TextField, FormControl} from '@material-ui/core';
 import User from '../model/user.model';
 import {uploadImage} from '../services/image.service';
 import {getImageDownloadPath} from '../config/urls'
@@ -11,6 +11,11 @@ import {addUser, updateUser, addRoleToUser} from '../services/user.services';
 import ROUTES from '../config/routes';
 import {LOCATION_LIST} from '../config/locations';
 import UserRole from '../model/user-role.model';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const adminOptions = [
     { label: 'Grupo de interes' },
@@ -38,9 +43,12 @@ const adminOptions = [
     phoneError: boolean,
     managerError: boolean,
     imageError: boolean,
-    created : boolean;
-    editMode : boolean;
-    UserId : string;
+    created : boolean,
+    editMode : boolean,
+    UserId : string,
+    open: boolean,
+    setOpen: boolean,
+    correct: boolean
   }
   
 
@@ -106,7 +114,9 @@ export default class AddUser extends Component<{}, AddUserState> {
             "imageError" : false,
             "created" : false,
             "editMode" : editMode,
-            
+            "open": false,
+            "setOpen": false,
+            "correct": false
         })    
   }
 
@@ -117,6 +127,13 @@ export default class AddUser extends Component<{}, AddUserState> {
     this.setState(update)
   }
 
+  handleImageChange = (name : string) => ({target : {files }} : {target : { files:any }}) => {
+    let newValue : any = files[0];
+    let update : any = {};
+    update[name] = newValue;
+    console.log(newValue)
+    this.setState(update)
+  }
 
   handleSubmit = () => {
     //TODO validation
@@ -128,13 +145,14 @@ export default class AddUser extends Component<{}, AddUserState> {
     stateUpdate["locationError"] = false;
     stateUpdate["emailError"] = false;
     stateUpdate["managerError"] = false;
+    stateUpdate["placeError"] = false;
 
     //mark error on unfilled fields
     if(this.state.name.length < 1){
         err = true;
         stateUpdate["nameError"] = true;
     }
-    if(this.state.phone.length < 1){
+    if(this.state.phone.length < 1 || this.state.phone.length >8 ){
         err = true;
         stateUpdate["phoneError"] = true;
     }
@@ -154,14 +172,18 @@ export default class AddUser extends Component<{}, AddUserState> {
         err = true;
         stateUpdate["locationError"] = true;
     }
+    if(this.state.place.length < 1){
+      err = true;
+      stateUpdate["placeError"] = true;
+  }
 
     this.setState(stateUpdate);
     if(err) return;
     console.log(this.state.image)
     var imageUrl = this.state.image;
     if(this.state.imageFile){
-        var activity_name = "Usuario" + this.state.name.replace(/\s+/g, '');
-        var imageUrl = getImageDownloadPath(activity_name,this.state.imageFile);
+        var activity_name = "Usuario" + this.state.UserId.replace(/\s+/g, '');
+        imageUrl = getImageDownloadPath(activity_name,this.state.imageFile);
         console.log(imageUrl);
         console.log(this.state.imageFile);
         uploadImage(activity_name, this.state.imageFile,()=>{console.log("upload executed multipart")});
@@ -181,12 +203,12 @@ export default class AddUser extends Component<{}, AddUserState> {
     if(this.state.editMode){
         var userSt : any = sessionStorage.getItem("user");
         userSt = userSt ? JSON.parse(userSt) : userSt;
-        user.password = user.password;
+        user.password = userSt.password;
         user.id = userSt.id;
-        updateUser(user,this.onUserAdded);
+        updateUser(user,this.onRoleAdded);
         sessionStorage.removeItem("user");
     }else{
-      addUser(user,  this.onUserAdded);
+      addUser(user, this.onUserAdded);
     }
   }
   onUserAdded = (result : any) => {
@@ -198,18 +220,21 @@ export default class AddUser extends Component<{}, AddUserState> {
   }
 
   onRoleAdded = (result :   boolean) =>{
-    if(result) this.setState({created:true})
+    if(result) {this.handleClickOpen();}
   }
 
-  handleImageChange = (name : string) => ({target : {files }} : {target : { files:any }}) => {
-    let newValue : any = files[0];
-    let update : any = {};
-    update[name] = newValue;
-    //console.log(newValue)
-    //this.handleImageUpload(files[0],"activityX")
-    this.setState(update)
-  }
+  handleClickAcepted = () => {
+    this.setState({created : true});
+  };
 
+  handleClickOpen = () => {
+    //if(this.state.correct)
+      this.setState({open:true});
+  };
+
+  handleClose = () => {
+    this.setState({open:false});
+  };
 
   render() {
     var myself = this;
@@ -282,6 +307,20 @@ export default class AddUser extends Component<{}, AddUserState> {
             </Row>
             <Row className=" ml-0 mr-0"> 
                 <Col className="ml-5 mr-5 mb-2" md="4">
+                    <label>Ubicación*</label>
+                    <TextField
+                    id="standard-helperText"
+                    className ="login_input"
+                    value={this.state.place}
+                    onChange = {myself.handleFieldChange("place")}
+                    error = {myself.state.placeError}
+                    label={myself.state.placeError ? "Por favor inserta una ubicación del grupo" : ""}
+                    type="email"
+                    />
+                </Col>
+            </Row>
+            <Row className=" ml-0 mr-0"> 
+                <Col className="ml-5 mr-5 mb-2" md="4">
                     <label>Correo*</label>
                     <TextField
                     id="standard-helperText"
@@ -344,8 +383,11 @@ export default class AddUser extends Component<{}, AddUserState> {
               <input
                 type="file"
                 style={{ display: "none" }}
-                onChange={()=>{myself.handleImageChange("imageFile");myself.handleFieldChange("image")}}
+                onChange={myself.handleImageChange("imageFile")}
               />
+              <Typography className="mt-0 pl-2 pr-2" variant="body2" color="textSecondary" component="p">
+                { this.state.imageFile && this.state.imageFile.name }
+              </Typography>
             </Button>
             </Row>
             <Row className="justify-content-md-center pb-5 pt-3 mr-0 ml-0"> 
@@ -354,6 +396,25 @@ export default class AddUser extends Component<{}, AddUserState> {
                         onClick={this.handleSubmit}>
                         {this.state.editMode ? "Actualizar" : "Crear"}
                 </button>
+                <Dialog
+                open={this.state.open}
+                onClose={this.handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">{myself.state.editMode ? "Edición" : "Creación"}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                  {myself.state.editMode ? "Se modificaron los datos del usuario correctamente." : "Se creo un nuevo usuario correctamente, la contraseña por defecto es: 1234, recomendarle al nuevo usuario cambiarla una vez se ingrese al sistema."}
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <button className="mr-4 green teconecta_button mid_lenght"
+                   onClick={() => {this.handleClose(); this.handleClickAcepted()}} color="primary" autoFocus>
+                    Aceptar
+                  </button>
+                </DialogActions>
+              </Dialog>
                 <Route render={({ history}) => (
                 <button 
                         className="ml-4 red teconecta_button mid_lenght"

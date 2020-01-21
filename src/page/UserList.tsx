@@ -58,6 +58,7 @@ export default class UserList extends Component<{}, UserListState> {
   }
 
   setUser = (user: any) => { 
+    //console.log(user)
     sessionStorage.setItem("user", JSON.stringify(user));
   }
 
@@ -131,7 +132,7 @@ export default class UserList extends Component<{}, UserListState> {
                   
                   <Button variant="contained" color="primary" 
                     onClick={()=>{myself.setUser(user);history.push(ROUTES.VIEW_USER);}}>
-                    View
+                    Detalles
                   </Button>
   
                   </Col>

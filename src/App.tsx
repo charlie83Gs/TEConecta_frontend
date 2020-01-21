@@ -12,6 +12,7 @@ import UserList from './page/UserList';
 import ViewUser from './page/ViewUser';
 import Participants from './page/Participants';
 import ViewEvent from './page/ViewEvent';
+import ChangePassword from './page/ChangePassword';
 import './App.css';
 import ROUTES from './config/routes'
 import {
@@ -26,7 +27,7 @@ import {
 
 const App: React.FC = () => {
   
-  
+  document.title = "TEConecta";
   return (
     <Router>
         <Switch>
@@ -61,7 +62,7 @@ const App: React.FC = () => {
             <ViewUser />
           </Route>
           <Route path={ROUTES.VIEW_EVENT} component={ViewEvent} />
-
+          <Route path={ROUTES.CHANGE_PASSWORD} component={ChangePassword} />
           
           <Route path={ROUTES.NEWS_FEED}>
             <NewsFeed />

@@ -22,6 +22,7 @@ const ViewUser =
         if(rawUser){
             user = User.loadFromJson(JSON.parse(rawUser));
         }
+        console.log(user)
         return(
             <div className="gray" style={{"minHeight":"100vh"}}>
             <Header title=" - Ver usuario" navigate={true}></Header> 
@@ -44,7 +45,7 @@ const ViewUser =
               subheader={user.location}
             />
             <label>
-            <Avatar className="ml-3" src={"https://loremflickr.com/320/240"} style={{width:"10rem",height:"10rem"}}/>
+            <Avatar className="ml-3" src={user.urlImgProfile} style={{width:"10rem",height:"10rem"}}/>
             </label>
             <label className="ml-4" style={{top:"-3rem" ,position:"relative"}}>
             <Typography  className="d-inline" variant="body2" color="textSecondary" component="p">
@@ -52,11 +53,15 @@ const ViewUser =
             </Typography>
             <br/>
             <Typography  className="d-inline" variant="body2" color="textSecondary" component="p">
-                <b>Correo:</b>{  "  " + user.email}
+                <b>Correo:</b>{  "  " + user.id}
             </Typography>
             <br/>
             <Typography  className="d-inline" variant="body2" color="textSecondary" component="p">
                 <b>Encargado:</b>{  "  " + user.manager}
+            </Typography>
+            <br/>
+            <Typography  className="d-inline" variant="body2" color="textSecondary" component="p">
+                <b>Ubicación:</b>{  "  " + user.place}
             </Typography>
             </label>
             <CardContent>

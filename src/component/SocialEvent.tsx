@@ -19,10 +19,9 @@ const SocialEvent =
         return(
             <Fragment>
                 {event && 
-                    <Helmet>
+                    <Helmet  defer={false}> 
                         <meta name="fragment" content="!"></meta>
                         <meta property="og:title" content={event.name}/>
-                        <meta property="og:url" content={URLS.DOMAIN + ROUTES.VIEW_EVENT +"/"+ event.id}/>
                         <meta property="og:description" content={event.description}/>
                         <meta property="og:image" content={event.urlImgActivity}/>
                         <meta name="twitter:card" content="summary_large_image"/>
@@ -33,8 +32,8 @@ const SocialEvent =
         )  
     }
 
-    interface LoginProps {
-    
-    }
 
 export default SocialEvent;
+
+
+//<meta property="og:url" content={URLS.DOMAIN + ROUTES.VIEW_EVENT +"/"+ event.id}/>

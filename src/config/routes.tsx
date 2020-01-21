@@ -12,6 +12,7 @@ const ROUTES={
     VIEW_PARTICIPANTS : "/participants",
     VIEW_REGISTER : "/ViewRegister",
     VIEW_EVENT : "/ViewEvent/:event_id",
+    CHANGE_PASSWORD : "/changePassword",
     VIEW_EVENT_NO_HANDLE : "/ViewEvent", //must be same as view event without : event_id
 
 }

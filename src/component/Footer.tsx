@@ -1,21 +1,7 @@
 import React, { Fragment } from 'react'; // we need this to make JSX compile
-import { Route } from "react-router-dom";
-import {getSession} from '../services/session.service'
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import {Row} from 'reactstrap';
-import ROUTES from '../config/routes'
-import Avatar from '@material-ui/core/Avatar';
-import { callbackify } from 'util';
 import InfoCard from '../component/InfoCard';
 
-const acerca = 'Está plataforma ha sido desarrollada como parte del curso:\n \
-Proyecto de Ingeniería de Software en el periodo de verano 2019\n \
-de la escuela de Ingeniería en Computación del Tecnológico de Costa Rica\n \
-por los estudiantes:\n \
-Carlos Gomez Soza Email: cargomez@ic-itcr.ac.cr\n \
-Wilson López Rubi Email: willopez@ic-itcr.ac.cr\n \
-Juan José Solano Email: juasolano@ic-itcr.ac.cr\n'
+const acerca = 'Está plataforma ha sido desarrollada como parte del curso:\nProyecto de Ingeniería de Software en el periodo de verano 2019 de la\nescuela de Ingeniería en Computación del Tecnológico de Costa Rica\npor los estudiantes:\nCarlos Gomez Soza Email: cargomez@ic-itcr.ac.cr\nWilson López Rubi Email: willopez@ic-itcr.ac.cr\nJuan José Solano Email: juasolano@ic-itcr.ac.cr'
 
 const  terminos = 'Terminos y Condiciones'
 

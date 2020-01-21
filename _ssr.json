@@ -1,0 +1,4 @@
+{
+    "metaOnly": true,
+    "lazyLoad": ["/ViewEvent"]
+}

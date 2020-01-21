@@ -9,7 +9,6 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import { green } from '@material-ui/core/colors';
 import ROUTES from '../config/routes';
 import DateFnsUtils from '@date-io/date-fns';
 import Event from '../model/event.model';
@@ -19,6 +18,14 @@ import {getImageDownloadPath} from '../config/urls'
 import {getSession} from '../services/session.service';
 import {LOCATION_LIST} from '../config/locations';
 import {EVENT_TYPE_LIST} from '../config/eventTypes';
+import Typography from '@material-ui/core/Typography';
+import CreationResultDialog from '../component/CreationResultDialog';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { isThisSecond } from 'date-fns/esm';
 
 
 type AddEventState = {
@@ -43,7 +50,10 @@ type AddEventState = {
   descriptionError: boolean,
   typeError: boolean,
   editMode: boolean,
-  created: boolean
+  created: boolean,
+  open: boolean,
+  setOpen: boolean,
+  correct: boolean
 }
 
 function formatDateToTime(date : Date) {
@@ -56,18 +66,18 @@ function formatDateToTime(date : Date) {
 }
 
 export default class AddEvent extends Component<{}, AddEventState> {
-
-
     constructor(props : any) { // does not compile in strict mode
         super(props)
         //load last used username
         
     }
+    
+
 
 
   // Before the component mounts, we initialise our state
   componentWillMount() {
-
+    
     //load event if selected
     var event : any = sessionStorage.getItem("event");
     var name = "";
@@ -122,6 +132,9 @@ export default class AddEvent extends Component<{}, AddEventState> {
           "descriptionError" : false,
           "editMode" : editMode,
           "created" : false,
+          "open": false,
+          "setOpen": false,
+          "correct": false
       })    
         
   }
@@ -188,7 +201,7 @@ export default class AddEvent extends Component<{}, AddEventState> {
     var imageUrl = this.state.image;
     if(this.state.imageFile){
       var activity_name = "Activity" + this.state.name.replace(/\s+/g, '');
-      var imageUrl = getImageDownloadPath(activity_name,this.state.imageFile);
+      imageUrl = getImageDownloadPath(activity_name,this.state.imageFile);
       console.log(imageUrl);
       console.log(this.state.imageFile);
       uploadImage(activity_name, this.state.imageFile,()=>{console.log("upload executed multipart")});
@@ -219,12 +232,11 @@ export default class AddEvent extends Component<{}, AddEventState> {
       updateEvent(event,this.onEventAdded);
     }else
       addEvent(event,this.onEventAdded);
-    console.log(event)
+      console.log(event)
   }
 
   onEventAdded = (res : boolean) => {
-    console.log(res);
-    this.setState({"created" : res})
+    if(res) this.handleClickOpen();
   }
 
   handleFieldChange = (name : string) => ({target : {value }} : {target : { value:any }}) => {
@@ -256,16 +268,20 @@ export default class AddEvent extends Component<{}, AddEventState> {
     let newValue : any = files[0];
     let update : any = {};
     update[name] = newValue;
-    //console.log(newValue)
-    //this.handleImageUpload(files[0],"activityX")
     this.setState(update)
   }
-  //upload image
-  /*handleImageUpload = (image : any, activity_name : string) => { 
-    activity_name = activity_name.replace(/\s+/g, '');
-    uploadImage("Activity" + activity_name,image,()=>{console.log("upload executed multipart")});
-    //uploadImage("uploadImageJson",image,()=>{console.log("upload executed json")});
-  }*/
+
+  handleClickAcepted = () => {
+    this.setState({created : true});
+  };
+
+  handleClickOpen = () => {
+      this.setState({open:true});
+  };
+
+  handleClose = () => {
+    this.setState({open:false});
+  };
 
   handleBooleanChange =  (name : string) => (event : any) => {
     this.setState({ ...this.state, [name]: event.target.checked });
@@ -411,6 +427,9 @@ export default class AddEvent extends Component<{}, AddEventState> {
                 style={{ display: "none" }}
                 onChange={myself.handleImageChange("imageFile")}
               />
+              <Typography className="mt-0 pl-2 pr-2" variant="body2" color="textSecondary" component="p">
+                { this.state.imageFile && this.state.imageFile.name }
+              </Typography>
             </Button>
             </Row>
             <Row className="m-0">
@@ -442,12 +461,30 @@ export default class AddEvent extends Component<{}, AddEventState> {
             </Row>
             <Row className="justify-content-md-center pb-5 pt-3 m-0"> 
 
-                <button 
+            <button 
                         className="mr-4 green teconecta_button mid_lenght"
-                        onClick={this.handleSubmit}>
+                        onClick={() => {this.handleSubmit();}}>
                         {myself.state.editMode ? "Editar" : "Crear"}
                 </button>
-      
+                <Dialog
+                open={this.state.open}
+                onClose={this.handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">{myself.state.editMode ? "Edición" : "Creación"}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                  {myself.state.editMode ? "Se modificaron los datos de la actividad correctamente." : "Se creo la actividad correctamente."}
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <button className="mr-4 green teconecta_button mid_lenght"
+                   onClick={() => {this.handleClose(); this.handleClickAcepted()}} color="primary" autoFocus>
+                    Aceptar
+                  </button>
+                </DialogActions>
+              </Dialog>
                 <Route render={({ history}) => (
                 <button 
                         className="ml-4 red teconecta_button mid_lenght"
@@ -470,13 +507,3 @@ export default class AddEvent extends Component<{}, AddEventState> {
     )
 }
 }
-
-/* 
-          <button 
-                        className="mr-4 blue teconecta_button mid_lenght" 
-                        data-href="https://facebook.com" //Aqui va el link de la pagina de facebook a compartir 
-                        data-layout="button" data-size="large">
-                          <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fboiling-springs-28349.herokuapp.com%2F&amp;src=sdkpreparse" 
-                          className="fb-xfbml-parse-ignore">Compartir</a>
-                </button>
-*/
